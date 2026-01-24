@@ -2,28 +2,20 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useRouter } from "next/navigation";
-
+import { useRouter } from "next/navigation"; // Router-i çağırırıq
 import AdminSidebar from "@/app/admin/adminsidebar"; 
 import { FiEdit2, FiTrash2, FiPlus } from "react-icons/fi";
 
-interface Product {
-  _id: string;
-  name: string;
-  price: number;
-  category: string;
-  brand: string;
-  countInStock: number;
-  image: string;
-}
+// ... (Product interface eyni qalır)
 
 export default function ProductsPage() {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    // ... (Login yoxlaması eyni qalır)
+     if (typeof window !== "undefined") {
       const userInfo = localStorage.getItem("userInfo")
         ? JSON.parse(localStorage.getItem("userInfo")!)
         : null;
@@ -42,13 +34,14 @@ export default function ProductsPage() {
       setProducts(data);
       setLoading(false);
     } catch (error) {
-      console.error("Xəta:", error);
+      console.error(error);
       setLoading(false);
     }
   };
 
   const deleteHandler = async (id: string) => {
-    if (window.confirm("Bu məhsulu silməyə əminsiniz?")) {
+     // ... (Silmək kodu eyni qalır)
+     if (window.confirm("Bu məhsulu silməyə əminsiniz?")) {
       try {
         const userInfo = JSON.parse(localStorage.getItem("userInfo")!);
         const config = {
@@ -62,45 +55,34 @@ export default function ProductsPage() {
     }
   };
 
-  const createProductHandler = async () => {
-    try {
-        const userInfo = JSON.parse(localStorage.getItem('userInfo')!);
-        const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-        await axios.post(`http://localhost:5001/api/products`, {}, config);
-        alert('Yeni məhsul yaradıldı!');
-        fetchProducts();
-    } catch (error) {
-        alert('Yaratmaq mümkün olmadı');
-    }
-  }
+  // 🔴 KÖHNƏNİ SİL: createProductHandler lazım deyil, çünki birbaşa form səhifəsinə gedəcəyik.
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
-     
       <AdminSidebar />
-
-  
       <main className="ml-64 w-full p-8">
         
         {loading ? (
            <div className="text-center py-10">Yüklənir...</div>
         ) : (
            <>
-        
             <div className="flex justify-between items-center mb-8">
                 <div>
-                <h1 className="text-2xl font-bold text-gray-900">Məhsullar</h1>
-                <p className="text-gray-500">Məhsulların idarə edilməsi</p>
+                    <h1 className="text-2xl font-bold text-gray-900">Məhsullar</h1>
+                    <p className="text-gray-500">Məhsulların idarə edilməsi</p>
                 </div>
+                
+                {/* --- DÜYMƏNİ BURADA DƏYİŞDİK --- */}
                 <button
-                onClick={createProductHandler}
-                className="bg-black hover:bg-gray-800 text-white px-5 py-2.5 rounded-lg flex items-center gap-2 transition-all shadow-lg"
+                    onClick={() => router.push("/admin/create-product")} 
+                    className="bg-black hover:bg-gray-800 text-white px-5 py-2.5 rounded-lg flex items-center gap-2 transition-all shadow-lg"
                 >
-                <FiPlus /> Məhsul Yarat
+                    <FiPlus /> Məhsul Yarat
                 </button>
+                {/* ---------------------------------- */}
+                
             </div>
 
-         
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <table className="w-full text-left border-collapse">
                 <thead>
@@ -118,7 +100,8 @@ export default function ProductsPage() {
                         <td className="p-4">
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded bg-gray-100 overflow-hidden">
-                                <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                                {/* Şəkil yoxdursa default bir şey göstərsin */}
+                                <img src={product.image || "https://via.placeholder.com/50"} alt={product.name} className="w-full h-full object-cover" />
                             </div>
                             <div>
                                 <p className="font-medium text-gray-900">{product.name}</p>
@@ -135,17 +118,19 @@ export default function ProductsPage() {
                         <td className="p-4 text-sm">{product.countInStock}</td>
                         <td className="p-4 text-right">
                         <div className="flex justify-end gap-2">
+                            {/* EDIT düyməsi - Düzəliş səhifəsinə aparır */}
                             <button
-                            onClick={() => router.push(`/admin/product/${product._id}/edit`)}
-                            className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg"
+                                onClick={() => router.push(`/admin/product/${product._id}/edit`)}
+                                className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg"
                             >
-                            <FiEdit2 />
+                                <FiEdit2 />
                             </button>
+                            
                             <button
-                            onClick={() => deleteHandler(product._id)}
-                            className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg"
+                                onClick={() => deleteHandler(product._id)}
+                                className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg"
                             >
-                            <FiTrash2 />
+                                <FiTrash2 />
                             </button>
                         </div>
                         </td>

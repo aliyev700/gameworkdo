@@ -1,173 +1,177 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import React, { useState } from "react";
+import Link from "next/link";
+import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
-export default function Register() {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false);
-    const router = useRouter();
+export default function RegisterPage() {
+  const router = useRouter();
+  
+  // Form məlumatları üçün state
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+  });
 
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-    const handleRegister = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setError('');
-        setLoading(true);
+  // Input dəyişəndə state-i yenilə
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-        if (!name || !email || !password || !confirmPassword) {
-            setError('Bütün xanaları doldurun');
-            setLoading(false);
-            return;
-        }
+  // Qeydiyyat funksiyası
+  const submitHandler = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
 
-        if (password !== confirmPassword) {
-            setError('Şifrələr uyğun gəlmir');
-            setLoading(false);
-            return;
-        }
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
 
-        if (password.length < 6) {
-            setError('Şifrə ən azı 6 xarakterli olmalıdır');
-            setLoading(false);
-            return;
-        }
+      await axios.post(
+        "http://localhost:5001/api/users", 
+        {
+          name: `${formData.firstName} ${formData.lastName}`,
+          email: formData.email,
+          password: formData.password,
+        },
+        config
+      );
 
-        try {
-            const response = await fetch(`${API_URL}/users/register`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name, email, password }),
-            });
+      alert("Qeydiyyat uğurludur!");
+      router.push("/login");
+      
+    } catch (err: any) {
+      setError(err.response?.data?.message || "Xəta baş verdi");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-            const data = await response.json();
-
-            if (!response.ok) {
-                setError(data.message || 'Qeydiyyat uğursuz oldu');
-                setLoading(false);
-                return;
-            }
-
-            // Store token in localStorage
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('user', JSON.stringify({
-                id: data._id,
-                name: data.name,
-                email: data.email,
-            }));
-
-            setLoading(false);
-            // Redirect to home
-            router.push('/');
-        } catch (err) {
-            setError('Bir xəta baş verdi. Zəhmət olmasa yenidən cəhd edin');
-            setLoading(false);
-        }
-    };
-
-    return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4">
-            <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
-                <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">Qeydiyyatdan Keçin</h2>
-
-                {error && (
-                    <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
-                        {error}
-                    </div>
-                )}
-
-                <form onSubmit={handleRegister} className="space-y-4">
-                    <div>
-                        <label className="block text-gray-700 font-semibold mb-2">Ad</label>
-                        <input
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                            placeholder="Adınızı daxil edin"
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block text-gray-700 font-semibold mb-2">Email</label>
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                            placeholder="example@email.com"
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block text-gray-700 font-semibold mb-2">Şifrə</label>
-                        <div className="relative">
-                            <input
-                                type={showPassword ? 'text' : 'password'}
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                                placeholder="••••••••"
-                            />
-                            <button
-                                type="button"
-                                onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-3 top-2.5 text-gray-500 hover:text-gray-700"
-                            >
-                                {showPassword ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
-                            </button>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label className="block text-gray-700 font-semibold mb-2">Şifrəni Təsdiq Edin</label>
-                        <div className="relative">
-                            <input
-                                type={showConfirmPassword ? 'text' : 'password'}
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                                placeholder="••••••••"
-                            />
-                            <button
-                                type="button"
-                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                className="absolute right-3 top-2.5 text-gray-500 hover:text-gray-700"
-                            >
-                                {showConfirmPassword ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
-                            </button>
-                        </div>
-                    </div>
-
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className={`w-full py-2 rounded-lg font-semibold text-white transition ${loading
-                                ? 'bg-gray-400 cursor-not-allowed'
-                                : 'bg-indigo-600 hover:bg-indigo-700'
-                            }`}
-                    >
-                        {loading ? 'Qeydiyyat edilir...' : 'Qeydiyyatdan Keçin'}
-                    </button>
-                </form>
-
-                <p className="text-center text-gray-600 mt-6">
-                    Artıq hesabınız var?{' '}
-                    <Link href="/login" className="text-indigo-600 font-semibold hover:underline">
-                        Giriş Edin
-                    </Link>
-                </p>
-            </div>
+  return (
+    <div className="min-h-screen bg-black text-white flex flex-col items-center pt-20 pb-10 px-4 font-sans relative">
+      
+      {/* --- DÜZƏLİŞ EDİLƏN HİSSƏ --- */}
+      {/* top-10 yerinə top-32 yazdım ki, Navbarın altında qalsın */}
+      <Link 
+        href="/" 
+        className="absolute top-32 left-4 md:left-10 flex items-center gap-2 text-sm font-medium hover:text-gray-300 transition-colors"
+      >
+        <div className="w-8 h-8 rounded-full border border-gray-600 flex items-center justify-center">
+             <FiArrowLeft />
         </div>
-    );
+        Back to home
+      </Link>
+      {/* --------------------------- */}
+
+      {/* Başlıq */}
+      <h1 className="text-4xl font-bold mb-10 mt-16 md:mt-10">Create account</h1>
+
+      {/* Form Konteyneri */}
+      <div className="w-full max-w-3xl border border-gray-800 rounded-sm">
+        <form onSubmit={submitHandler}>
+            
+          {/* Section 1: Personal Details */}
+          <div className="p-8 border-b border-gray-800">
+            <h2 className="text-xl font-medium mb-6">Your Personal Details</h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div>
+                <label className="block text-sm mb-2">
+                  First Name<span className="text-red-500">*</span>:
+                </label>
+                <input
+                  type="text"
+                  name="firstName"
+                  placeholder="First name"
+                  required
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  className="w-full bg-black border border-gray-700 rounded px-4 py-3 focus:outline-none focus:border-gray-500 transition-colors placeholder-gray-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm mb-2">
+                  Last Name<span className="text-red-500">*</span>:
+                </label>
+                <input
+                  type="text"
+                  name="lastName"
+                  placeholder="Last name"
+                  required
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  className="w-full bg-black border border-gray-700 rounded px-4 py-3 focus:outline-none focus:border-gray-500 transition-colors placeholder-gray-500"
+                />
+              </div>
+            </div>
+
+            <div className="mb-2">
+              <label className="block text-sm mb-2">
+                E-mail<span className="text-red-500">*</span>:
+              </label>
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                required
+                value={formData.email}
+                onChange={handleChange}
+                className="w-full bg-black border border-gray-700 rounded px-4 py-3 focus:outline-none focus:border-gray-500 transition-colors placeholder-gray-500"
+              />
+            </div>
+          </div>
+
+          {/* Section 2: Password */}
+          <div className="p-8 border-b border-gray-800">
+            <h2 className="text-xl font-medium mb-6">Your Password</h2>
+            <div>
+              <label className="block text-sm mb-2">
+                Password<span className="text-red-500">*</span>:
+              </label>
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                required
+                value={formData.password}
+                onChange={handleChange}
+                className="w-full bg-black border border-gray-700 rounded px-4 py-3 focus:outline-none focus:border-gray-500 transition-colors placeholder-gray-500"
+              />
+            </div>
+          </div>
+
+          {/* Xəta Mesajı */}
+          {error && (
+            <div className="px-8 py-4 text-red-500 text-sm">
+                {error}
+            </div>
+          )}
+
+          {/* Footer: Create Button */}
+          <div className="p-8 flex justify-end">
+            <button
+              type="submit"
+              disabled={loading}
+              className="bg-[#D23F3F] hover:bg-[#b83232] text-white px-8 py-3 rounded flex items-center gap-2 font-medium transition-all"
+            >
+              {loading ? "Creating..." : "Create"}
+              {!loading && <FiArrowRight />}
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  );
 }
