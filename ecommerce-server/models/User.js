@@ -14,6 +14,13 @@ const userSchema = mongoose.Schema({
         type: String,
         required: [true, 'Zəhmət olmasa şifrə daxil edin']
     },
+    // --- BU HİSSƏ ÇATIŞMIRDI, ƏLAVƏ ETDİM ---
+    isAdmin: {
+        type: Boolean,
+        required: true,
+        default: false // Susmaya görə hər kəs sadə userdir
+    }
+    // ------------------------------------------
 }, {
     timestamps: true
 });
