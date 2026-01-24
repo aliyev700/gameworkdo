@@ -1,11 +1,41 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 // İkonları import edirik (Həm Fi, həm də Fa seriyasından)
-import { FiSearch, FiUser, FiShoppingCart, FiChevronDown, FiGrid, FiLayers, FiMail } from "react-icons/fi";
+import { FiSearch, FiUser, FiShoppingCart, FiChevronDown, FiGrid, FiLayers, FiMail, FiLogOut } from "react-icons/fi";
 import { FaChessKnight, FaDice, FaGamepad, FaPuzzlePiece, FaCar } from "react-icons/fa";
 
+interface User {
+    id: string;
+    name: string;
+    email: string;
+}
+
 const Header = () => {
+    const [user, setUser] = useState<User | null>(null);
+    const [showDropdown, setShowDropdown] = useState(false);
+    const router = useRouter();
+
+    useEffect(() => {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+            try {
+                setUser(JSON.parse(storedUser));
+            } catch (error) {
+                console.error('Failed to parse user:', error);
+            }
+        }
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        setUser(null);
+        setShowDropdown(false);
+        router.push('/');
+    };
     return (
         <header className="w-full">
 
@@ -61,9 +91,40 @@ const Header = () => {
 
                         {/* User və Səbət */}
                         <div className="flex items-center gap-5 ml-2">
-                            <Link href="/login" className="text-3xl text-gray-600 hover:text-black">
-                                <FiUser />
-                            </Link>
+                            {user ? (
+                                <div className="relative">
+                                    <button
+                                        onClick={() => setShowDropdown(!showDropdown)}
+                                        className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
+                                    >
+                                        <FiUser className="text-lg" />
+                                        <span className="text-sm font-bold hidden sm:inline">{user.name}</span>
+                                        <FiChevronDown className="text-sm" />
+                                    </button>
+                                    {showDropdown && (
+                                        <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+                                            <div className="p-3 border-b">
+                                                <p className="text-sm font-bold">{user.name}</p>
+                                                <p className="text-xs text-gray-600">{user.email}</p>
+                                            </div>
+                                            <Link href="/profile" className="block px-4 py-2 text-sm hover:bg-gray-100">
+                                                Profil
+                                            </Link>
+                                            <button
+                                                onClick={handleLogout}
+                                                className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 flex items-center gap-2"
+                                            >
+                                                <FiLogOut />
+                                                Çıxış
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            ) : (
+                                <Link href="/login" className="text-3xl text-gray-600 hover:text-black">
+                                    <FiUser />
+                                </Link>
+                            )}
 
                             <Link href="/cart" className="flex items-center gap-3 group">
                                 <div className="relative text-3xl text-gray-600 group-hover:text-black">
