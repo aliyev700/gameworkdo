@@ -61,9 +61,9 @@ const Header = () => {
 
                         {/* User və Səbət */}
                         <div className="flex items-center gap-5 ml-2">
-                            <button className="text-3xl text-gray-600 hover:text-black">
+                            <Link href="/login" className="text-3xl text-gray-600 hover:text-black">
                                 <FiUser />
-                            </button>
+                            </Link>
 
                             <Link href="/cart" className="flex items-center gap-3 group">
                                 <div className="relative text-3xl text-gray-600 group-hover:text-black">
