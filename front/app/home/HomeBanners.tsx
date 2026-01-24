@@ -140,7 +140,7 @@ const HeroSection = () => {
                     <div className="relative overflow-hidden rounded-3xl group h-[700px]">
                         <div className="absolute inset-0">
                             <img
-                                src=""
+                                src="https://xboxwire.thesourcemediaassets.com/sites/2/2021/05/takeover_play_JPG.jpg"
                                 alt="Best Offer"
                                 className="w-full h-full object-cover"
                             />
