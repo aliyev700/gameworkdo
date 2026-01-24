@@ -15,9 +15,7 @@ const Header = () => {
 
                     {/* Logo */}
                     <Link href="/" className="flex-shrink-0">
-                        <h1 className="text-5xl font-black text-[#E60023] tracking-tighter font-serif">
-                            Game
-                        </h1>
+                        <img src="https://game-workdo.myshopify.com/cdn/shop/files/Game.png?v=1675229751" alt="" />
                     </Link>
 
                     {/* Axtarış (Search) */}
@@ -70,9 +68,7 @@ const Header = () => {
                             <Link href="/cart" className="flex items-center gap-3 group">
                                 <div className="relative text-3xl text-gray-600 group-hover:text-black">
                                     <FiShoppingCart />
-                                    <span className="absolute -top-2 -right-2 bg-[#E60023] text-white text-[10px] font-bold h-5 w-5 flex items-center justify-center rounded-full border-2 border-white">
-                                        2
-                                    </span>
+
                                 </div>
                                 <div className="hidden sm:block text-right leading-tight">
                                     <span className="block text-xs text-gray-500 font-bold">My Cart:</span>
