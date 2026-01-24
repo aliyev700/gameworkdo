@@ -50,7 +50,7 @@ const Header = () => {
 
                     {/* Axtarış (Search) */}
                     <div className="flex-1 max-w-2xl mx-8 hidden lg:block">
-                        <div className="flex items-center bg-gray-100 rounded-full p-1 pl-5">
+                        <div className="flex items-center bg-gray-200 rounded-full p-1 pl-5">
                             <FiSearch className="text-xl text-gray-500 mr-3" />
                             <input
                                 type="text"

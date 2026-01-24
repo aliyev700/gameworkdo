@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { FiHeart, FiZap, FiEye, FiShoppingCart, FiArrowRight } from "react-icons/fi";
+import Link from "next/link";
 
 const HeroSection = () => {
     // Countdown Timer State
@@ -44,8 +45,8 @@ const HeroSection = () => {
     }, []);
 
     return (
-        <section className="bg-[#1a1a1a] py-15 px-4 lg:px-8">
-            <div className="max-w-[1600px] mx-auto">
+        <section className=" py-15 px-4 lg:px-8">
+            <div className="max-w-390 mx-auto">
                 <div className="grid grid-cols-1 lg:grid-cols-[450px_1fr_450px] gap-5">
 
                     {/* Left Card - Warhammer 40,000 Darktide */}
@@ -129,8 +130,8 @@ const HeroSection = () => {
                             </div>
 
                             {/* Add to Cart Button */}
-                            <button className="w-full bg-[#E60023] text-white font-bold py-4 rounded-2xl flex items-center justify-center gap-3 hover:bg-[#c50020] transition-all duration-300">
-                                Add to Cart
+                            <button className="w-full bg-[#E60023] cursor-wait text-white font-bold py-4 rounded-2xl flex items-center justify-center gap-3 hover:bg-[#c50020] transition-all duration-300">
+                                Preorder Now
                                 <FiShoppingCart className="text-xl" />
                             </button>
                         </div>
@@ -151,10 +152,10 @@ const HeroSection = () => {
                             <h2 className="text-white text-5xl font-bold mb-6">
                                 Best Offer
                             </h2>
-                            <button className="bg-[#E60023] text-white font-bold py-4 px-8 rounded-2xl flex items-center justify-center gap-3 hover:bg-[#c50020] transition-all duration-300 w-fit">
+                            <Link href="/shop" className="bg-[#E60023] text-white font-bold py-4 px-8 rounded-2xl flex items-center justify-center gap-3 hover:bg-[#c50020] transition-all duration-300 w-fit">
                                 Show more
                                 <FiArrowRight className="text-xl" />
-                            </button>
+                            </Link>
                         </div>
                     </div>
 
@@ -179,10 +180,10 @@ const HeroSection = () => {
                                 <h3 className="text-white text-2xl font-bold mb-4 leading-tight">
                                     Get all snacks in your Pocket
                                 </h3>
-                                <button className="bg-[#E60023] text-white font-bold py-3 px-6 rounded-2xl flex items-center justify-center gap-2 hover:bg-[#c50020] transition-all duration-300 w-fit">
+                                <Link href="/blog" className="bg-[#E60023] text-white font-bold py-3 px-6 rounded-2xl flex items-center justify-center gap-2 hover:bg-[#c50020] transition-all duration-300 w-fit">
                                     Show more
                                     <FiArrowRight className="text-lg" />
-                                </button>
+                                </Link>
                             </div>
                         </div>
 
@@ -194,7 +195,7 @@ const HeroSection = () => {
                                     alt="Get your earning back shop your needed"
                                     className="w-full h-full object-cover"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/30 to-transparent"></div>
                             </div>
 
                             <div className="relative z-10 p-6 flex flex-col justify-end h-full">
@@ -204,10 +205,10 @@ const HeroSection = () => {
                                 <h3 className="text-white text-2xl font-bold mb-4 leading-tight">
                                     Get your earning back shop your needed
                                 </h3>
-                                <button className="bg-[#E60023] text-white font-bold py-3 px-6 rounded-2xl flex items-center justify-center gap-2 hover:bg-[#c50020] transition-all duration-300 w-fit">
+                                <Link href="/blog" className="bg-[#E60023] text-white font-bold py-3 px-6 rounded-2xl flex items-center justify-center gap-2 hover:bg-[#c50020] transition-all duration-300 w-fit">
                                     Show more
                                     <FiArrowRight className="text-lg" />
-                                </button>
+                                </Link>
                             </div>
                         </div>
                     </div>

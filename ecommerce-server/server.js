@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const path = require('path');
 const dotenv = require('dotenv');
 const connectDb = require('./config/db');
@@ -13,9 +14,13 @@ const port = process.env.PORT || 5001;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cors());
 
+app.get('/', (req, res) => {
+    res.send('API işləyir...');
+});
 
-app.use('/api/users', require('./routes/userRoutes')); 
+app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/products', productRoutes);
 
 app.listen(port, () => {
