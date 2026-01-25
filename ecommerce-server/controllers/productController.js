@@ -1,16 +1,15 @@
 const asyncHandler = require('express-async-handler');
 const Product = require('../models/Product'); 
 
-// @desc    Bütün məhsulları gətir (Filtrasiya ilə)
-// @route   GET /api/products
+
 const getProducts = asyncHandler(async (req, res) => {
     let query = {};
 
-    // 1. Açar sözə görə axtarış (Keyword)
+    
     if (req.query.keyword) {
         query.name = {
             $regex: req.query.keyword,
-            $options: 'i' // Böyük-kiçik hərf fərq etməsin
+            $options: 'i' 
         };
     }
 
