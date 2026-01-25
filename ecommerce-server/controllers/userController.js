@@ -1,6 +1,8 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto'); // Token yaratmaq üçün lazımdır
+const sendEmail = require('../utils/sendEmail'); // Email göndərmək üçün
 
 // Token yaratmaq funksiyası
 const generateToken = (id) => {
@@ -41,7 +43,7 @@ const registerUser = async (req, res) => {
                 _id: user.id,
                 name: user.name,
                 email: user.email,
-                isAdmin: user.isAdmin, // <--- BUNU ƏLAVƏ ETDİM (Vacibdir)
+                isAdmin: user.isAdmin,
                 token: generateToken(user._id),
             });
         } else {
@@ -67,7 +69,7 @@ const loginUser = async (req, res) => {
                 _id: user.id,
                 name: user.name,
                 email: user.email,
-                isAdmin: user.isAdmin, // <--- BUNU DA ƏLAVƏ ETDİM
+                isAdmin: user.isAdmin,
                 token: generateToken(user._id),
                 message: "Giriş Uğurludur!"
             });
@@ -80,9 +82,8 @@ const loginUser = async (req, res) => {
     }
 }
 
-// 3. İSTİFADƏÇİ MƏLUMATLARI (Profile)
+// 3. İSTİFADƏÇİ MƏLUMATLARI (Get Me)
 const getMe = async (req, res) => {
-    // req.user authMiddleware-dən gəlir
     if (!req.user) {
         return res.status(401).json({ message: "İcazə yoxdur" });
     }
@@ -97,4 +98,85 @@ const getMe = async (req, res) => {
     });
 }
 
-module.exports = { registerUser, loginUser, getMe };
+// 4. PAROLU UNUTDUM (Forgot Password)
+const forgotPassword = async (req, res) => {
+    const { email } = req.body;
+  
+    try {
+      const user = await User.findOne({ email });
+      if (!user) {
+        return res.status(404).json({ message: "Bu email ilə istifadəçi tapılmadı" });
+      }
+  
+      // Token yaradırıq (random kod)
+      const resetToken = crypto.randomBytes(20).toString('hex');
+  
+      // Tokeni bazaya yazırıq 
+      user.resetPasswordToken = resetToken;
+      user.resetPasswordExpire = Date.now() + 10 * 60 * 1000; // 10 dəqiqə vaxt verir
+  
+      await user.save();
+  
+      // Linki hazırlayırıq (Frontend adresi: localhost:3000)
+      const resetUrl = `http://localhost:3000/reset-password/${resetToken}`;
+  
+      const message = `Parolunuzu yeniləmək üçün bu linkə daxil olun:\n\n${resetUrl}`;
+  
+      try {
+        await sendEmail({
+          email: user.email,
+          subject: 'GameWorkDo - Parol Yeniləmə',
+          message,
+        });
+  
+        res.status(200).json({ success: true, message: "Email göndərildi" });
+      } catch (error) {
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpire = undefined;
+        await user.save();
+        return res.status(500).json({ message: "Email göndərilə bilmədi" });
+      }
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+};
+
+// 5. PAROLU YENİLƏ (Reset Password)
+const resetPassword = async (req, res) => {
+    const { token } = req.params;
+    const { password } = req.body;
+  
+    try {
+      // Bazada bu tokenə sahib və vaxtı keçməmiş istifadəçini tapırıq
+      const user = await User.findOne({
+        resetPasswordToken: token,
+        resetPasswordExpire: { $gt: Date.now() },
+      });
+  
+      if (!user) {
+        return res.status(400).json({ message: "Keçərsiz və ya vaxtı bitmiş token" });
+      }
+  
+      // Yeni şifrəni heşləyirik (Çünki sən registerdə manual heşləyirsən)
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(password, salt);
+
+      // Tokenləri təmizləyirik
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpire = undefined;
+  
+      await user.save();
+  
+      res.status(200).json({ success: true, message: "Parol uğurla yeniləndi" });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+};
+
+module.exports = { 
+    registerUser, 
+    loginUser, 
+    getMe, 
+    forgotPassword, 
+    resetPassword 
+};
