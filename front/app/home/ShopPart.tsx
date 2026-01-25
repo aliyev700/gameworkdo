@@ -64,134 +64,153 @@ const ShopPart = () => {
 
     if (loading) {
         return (
-            <section className="max-w-390 justify-center mx-auto my-8">
-                <div className="text-center py-12">
-                    <p className="text-lg text-gray-500">Loading games...</p>
-                </div>
+            <section className="bg-black py-20 min-h-[400px] flex items-center justify-center">
+                <div className="text-neutral-500 animate-pulse">Loading experience...</div>
             </section>
         );
     }
 
     if (error) {
         return (
-            <section className="max-w-390 justify-center mx-auto my-8">
-                <div className="text-center py-12">
-                    <p className="text-lg text-red-500">Error: {error}</p>
-                </div>
+            <section className="bg-black py-20 text-center">
+                <p className="text-red-500">System Error: {error}</p>
             </section>
         );
     }
 
     return (
-        <section className="max-w-390 justify-center mx-auto my-8">
-            <div className="flex justify-between items-center">
-                <h1 className="text-4xl font-bold">Today's Games</h1>
-                <div className="categories flex gap-2 flex-wrap">
-                    <button
-                        onClick={() => handleCategoryFilter('')}
-                        className={`px-4 py-2 rounded-full font-medium transition-colors ${selectedCategory === ''
-                            ? 'bg-blue-600 text-white'
-                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                            }`}
-                    >
-                        All
-                    </button>
-                    {categories.map((category) => (
+        // SECTION BG-ni QARA ETDİM Kİ, KARTLARLA UYĞUNLAŞSIN
+        <section className="bg-black py-16 md:py-24">
+            <div className="max-w-390 mx-auto px-4 sm:px-6">
+
+                {/* Başlıq və Filter hissəsi - Modernləşdirilib */}
+                <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-12 gap-6">
+                    <div>
+                        <span className="text-purple-500 font-mono text-sm font-bold tracking-widest uppercase mb-2 block">
+                            Discover
+                        </span>
+                        <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tighter">
+                            Latest Arrivals
+                        </h1>
+                    </div>
+
+                    {/* Filter Düymələri - Kartlara uyğunlaşdırıldı */}
+                    <div className="flex flex-wrap gap-2">
                         <button
-                            key={category}
-                            onClick={() => handleCategoryFilter(category)}
-                            className={`px-4 py-2 rounded-full font-medium transition-colors ${selectedCategory === category
-                                ? 'bg-blue-600 text-white'
-                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                            onClick={() => handleCategoryFilter('')}
+                            className={`px-5 py-2 rounded text-sm font-bold transition-all border ${selectedCategory === ''
+                                ? 'bg-white text-black border-white'
+                                : 'bg-transparent text-neutral-400 border-neutral-800 hover:border-neutral-600 hover:text-white'
                                 }`}
                         >
-                            {category}
+                            ALL
                         </button>
-                    ))}
+                        {categories.map((category) => (
+                            <button
+                                key={category}
+                                onClick={() => handleCategoryFilter(category)}
+                                className={`px-5 py-2 rounded text-sm font-bold transition-all border ${selectedCategory === category
+                                    ? 'bg-red-600 text-white border-red-600 shadow-[0_0_15px_rgba(147,51,234,0.5)]'
+                                    : 'bg-transparent text-neutral-400 border-neutral-800 hover:border-neutral-600 hover:text-white'
+                                    }`}
+                            >
+                                {category.toUpperCase()}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Grid Container */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {games.length > 0 ? (
+                        games.slice(0, 4).map((game) => (
+
+                            <Link href={`/product/${game._id}`} key={game._id} className="group relative block">
+
+                                {/* Card Container */}
+                                <div className="relative overflow-hidden bg-neutral-900 border border-neutral-800 rounded-lg transition-all duration-300">
+
+                                    {/* Image Area - DƏYİŞİKLİK BURADA */}
+                                    {/* h-140 sildik, aspect-[3/4] əlavə etdik ki, oyun qutusu kimi görünsün */}
+                                    <div className="relative aspect-[3/4] overflow-hidden bg-neutral-950">
+                                        <img
+                                            src={game.image}
+                                            alt={game.name}
+                                            // object-cover şəkli tam oturdur. Əgər şəklin kənarları boş qalsın amma tam görünsün istəyirsənsə 'object-contain' yaz
+                                            className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100"
+                                        />
+
+                                        {/* Status Badges */}
+                                        <div className="absolute top-3 left-3 flex flex-col gap-2">
+                                            {game.countInStock === 0 && (
+                                                <span className="px-2 py-1 bg-red-500/10 border border-red-500/50 text-red-500 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">
+                                                    Offline
+                                                </span>
+                                            )}
+                                        </div>
+
+                                        {/* Hover Overlay */}
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    </div>
+
+                                    {/* Info Area */}
+                                    <div className="p-5">
+                                        {/* ... Burası olduğu kimi qalır ... */}
+                                        <div className="flex justify-between items-start mb-2">
+                                            <p className="text-[12px] text-purple-400 font-bold uppercase tracking-widest">
+                                                {game.brand}
+                                            </p>
+                                            <div className="flex flex-col items-end gap-1">
+                                                <div className="flex items-center gap-0.5">
+                                                    {[...Array(5)].map((_, i) => (
+                                                        <span
+                                                            key={i}
+                                                            className={`text-xs ${i < Math.round(game.rating)
+                                                                ? 'text-yellow-400'
+                                                                : 'text-neutral-700'
+                                                                }`}
+                                                        >
+                                                            ★
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                                <span className="text-[10px] font-mono text-neutral-500">
+                                                    {game.rating.toFixed(1)} ({game.numReviews})
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <h3 className="text-lg font-bold text-white leading-tight mb-4 group-hover:text-purple-300 transition-colors line-clamp-2">
+                                            {game.name}
+                                        </h3>
+
+                                        <div className="flex items-center justify-between border-t border-neutral-800 pt-4 mt-2">
+                                            <div className="font-mono text-xl text-white">
+                                                ${game.price}
+                                            </div>
+
+                                            {/* Fake "Add" Button Visual */}
+                                            <div className="w-8 h-8 rounded-full border border-neutral-700 flex items-center justify-center text-neutral-400 hover:bg-white hover:text-black hover:border-white hover:rotate-z-180 duration-500 transition-all">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </Link>
+
+                        ))
+                    ) : (
+                        <div className="col-span-full py-20 text-center">
+                            <p className="text-neutral-600 font-mono">NO DATA_FOUND IN SECTOR {selectedCategory.toUpperCase()}</p>
+                        </div>
+                    )}
                 </div>
             </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-                {games.length > 0 ? (
-                    games.map((game) => (
-                        <Link href={`/product/${game._id}`} key={game._id}>
-                            <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden cursor-pointer">
-                                {/* Game Image */}
-                                <div className="relative w-full h-48 bg-gray-200">
-                                    <img
-                                        src={game.image}
-                                        alt={game.name}
-                                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                                    />
-                                    {game.countInStock === 0 && (
-                                        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                                            <span className="text-white font-bold">Out of Stock</span>
-                                        </div>
-                                    )}
-                                </div>
-
-                                {/* Game Info */}
-                                <div className="p-4">
-                                    <h3 className="text-lg font-semibold text-gray-800 line-clamp-2 mb-2">
-                                        {game.name}
-                                    </h3>
-
-                                    <p className="text-sm text-gray-600 mb-2">
-                                        Brand: <span className="font-medium">{game.brand}</span>
-                                    </p>
-
-                                    <p className="text-sm text-gray-600 mb-3">
-                                        Category: <span className="font-medium">{game.category}</span>
-                                    </p>
-
-                                    {/* Rating */}
-                                    <div className="flex items-center mb-3">
-                                        <div className="flex text-yellow-400">
-                                            {[...Array(5)].map((_, i) => (
-                                                <span key={i}>
-                                                    {i < Math.floor(game.rating) ? '★' : '☆'}
-                                                </span>
-                                            ))}
-                                        </div>
-                                        <span className="text-xs text-gray-600 ml-2">
-                                            ({game.numReviews} reviews)
-                                        </span>
-                                    </div>
-
-                                    {/* Price */}
-                                    <div className="flex justify-between items-center">
-                                        <span className="text-2xl font-bold text-blue-600">
-                                            ${game.price.toFixed(2)}
-                                        </span>
-                                        <button
-                                            className={`px-3 py-2 rounded text-sm font-medium transition-colors ${game.countInStock > 0
-                                                ? 'bg-blue-600 text-white hover:bg-blue-700'
-                                                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                                                }`}
-                                            disabled={game.countInStock === 0}
-                                        >
-                                            Add to Cart
-                                        </button>
-                                    </div>
-
-                                    {game.countInStock > 0 && (
-                                        <p className="text-xs text-green-600 mt-2">
-                                            {game.countInStock} in stock
-                                        </p>
-                                    )}
-                                </div>
-                            </div>
-                        </Link>
-                    ))
-                ) : (
-                    <div className="col-span-full text-center py-12">
-                        <p className="text-lg text-gray-500">No games found</p>
-                    </div>
-                )}
-            </div>
-
         </section>
-    )
-}
+    );
+};
 
-export default ShopPart
+export default ShopPart;

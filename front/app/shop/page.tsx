@@ -132,7 +132,7 @@ const ShopPage = () => {
 
                     {/* --- Sidebar Filters (The HUD) --- */}
                     <aside className={`w-full lg:w-72 flex-shrink-0`}>
-                        <div className="sticky top-24 space-y-8">
+                        <div className="sticky top-8 space-y-8">
 
                             {/* Mobile Toggle */}
                             <button
@@ -217,7 +217,7 @@ const ShopPage = () => {
                                             type="range"
                                             min="0"
                                             max="500"
-                                            step="100"
+                                            step="1"
                                             value={filters.maxPrice}
                                             onChange={(e) => handleFilterChange('maxPrice', Number(e.target.value))}
                                             className="w-full h-1 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-red-600 hover:accent-red-500"
@@ -269,12 +269,14 @@ const ShopPage = () => {
                                         {/* Card Container */}
                                         <div className="relative overflow-hidden bg-neutral-900 border border-neutral-800 rounded-lg transition-all duration-300">
 
-                                            {/* Image Area */}
-                                            <div className="relative  h-140 overflow-hidden bg-neutral-950">
+                                            {/* Image Area - DƏYİŞİKLİK BURADA */}
+                                            {/* h-140 sildik, aspect-[3/4] əlavə etdik ki, oyun qutusu kimi görünsün */}
+                                            <div className="relative aspect-[3/4] overflow-hidden bg-neutral-950">
                                                 <img
                                                     src={product.image}
                                                     alt={product.name}
-                                                    className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100"
+                                                    // object-cover şəkli tam oturdur. Əgər şəklin kənarları boş qalsın amma tam görünsün istəyirsənsə 'object-contain' yaz
+                                                    className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100"
                                                 />
 
                                                 {/* Status Badges */}
@@ -292,6 +294,7 @@ const ShopPage = () => {
 
                                             {/* Info Area */}
                                             <div className="p-5">
+                                                {/* ... Burası olduğu kimi qalır ... */}
                                                 <div className="flex justify-between items-start mb-2">
                                                     <p className="text-[12px] text-purple-400 font-bold uppercase tracking-widest">
                                                         {product.brand}
@@ -302,8 +305,8 @@ const ShopPage = () => {
                                                                 <span
                                                                     key={i}
                                                                     className={`text-xs ${i < Math.round(product.rating)
-                                                                            ? 'text-yellow-400'
-                                                                            : 'text-neutral-700'
+                                                                        ? 'text-yellow-400'
+                                                                        : 'text-neutral-700'
                                                                         }`}
                                                                 >
                                                                     ★
