@@ -270,7 +270,7 @@ const ShopPage = () => {
                                         <div className="relative overflow-hidden bg-neutral-900 border border-neutral-800 rounded-lg transition-all duration-300">
 
                                             {/* Image Area */}
-                                            <div className="relative aspect-square overflow-hidden bg-neutral-950">
+                                            <div className="relative  h-140 overflow-hidden bg-neutral-950">
                                                 <img
                                                     src={product.image}
                                                     alt={product.name}
@@ -312,7 +312,7 @@ const ShopPage = () => {
                                                     </div>
 
                                                     {/* Fake "Add" Button Visual */}
-                                                    <div className="w-8 h-8 rounded-full border border-neutral-700 flex items-center justify-center text-neutral-400 hover:bg-white hover:text-black hover:border-white hover:rotate-z-90 transition-all">
+                                                    <div className="w-8 h-8 rounded-full border border-neutral-700 flex items-center justify-center text-neutral-400 hover:bg-white hover:text-black hover:border-white hover:rotate-z-180 duration-500 transition-all">
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
                                                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                                         </svg>
@@ -320,6 +320,7 @@ const ShopPage = () => {
                                                 </div>
                                             </div>
                                         </div>
+
                                     </Link>
                                 ))}
                             </div>
