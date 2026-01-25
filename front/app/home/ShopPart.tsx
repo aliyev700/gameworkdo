@@ -90,8 +90,8 @@ const ShopPart = () => {
                     <button
                         onClick={() => handleCategoryFilter('')}
                         className={`px-4 py-2 rounded-full font-medium transition-colors ${selectedCategory === ''
-                                ? 'bg-blue-600 text-white'
-                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                            ? 'bg-blue-600 text-white'
+                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                             }`}
                     >
                         All
@@ -101,8 +101,8 @@ const ShopPart = () => {
                             key={category}
                             onClick={() => handleCategoryFilter(category)}
                             className={`px-4 py-2 rounded-full font-medium transition-colors ${selectedCategory === category
-                                    ? 'bg-blue-600 text-white'
-                                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                ? 'bg-blue-600 text-white'
+                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                                 }`}
                         >
                             {category}

@@ -296,9 +296,23 @@ const ShopPage = () => {
                                                     <p className="text-[12px] text-purple-400 font-bold uppercase tracking-widest">
                                                         {product.brand}
                                                     </p>
-                                                    <div className="flex items-center gap-1 text-yellow-500/80">
-                                                        <span className="text-sm">★</span>
-                                                        <span className="text-sm font-mono text-neutral-400">{product.rating}</span>
+                                                    <div className="flex flex-col items-end gap-1">
+                                                        <div className="flex items-center gap-0.5">
+                                                            {[...Array(5)].map((_, i) => (
+                                                                <span
+                                                                    key={i}
+                                                                    className={`text-xs ${i < Math.round(product.rating)
+                                                                            ? 'text-yellow-400'
+                                                                            : 'text-neutral-700'
+                                                                        }`}
+                                                                >
+                                                                    ★
+                                                                </span>
+                                                            ))}
+                                                        </div>
+                                                        <span className="text-[10px] font-mono text-neutral-500">
+                                                            {product.rating.toFixed(1)} ({product.numReviews})
+                                                        </span>
                                                     </div>
                                                 </div>
 
