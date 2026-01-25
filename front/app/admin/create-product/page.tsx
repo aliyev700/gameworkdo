@@ -20,8 +20,7 @@ export default function AddProductPage() {
     data.append("file", file);
 
     try {
-      // DÜZƏLİŞ 1: localhost -> 127.0.0.1 və port 5001
-      // Qeyd: Serverində /api/upload marşrutu olmalıdır
+      
       const res = await fetch("http://127.0.0.1:5001/api/upload", { 
         method: "POST", 
         body: data 
