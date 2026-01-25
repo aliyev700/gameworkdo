@@ -20,52 +20,21 @@ export default function AddProductPage() {
     data.append("file", file);
 
     try {
-      // DÜZƏLİŞ 1: localhost -> 127.0.0.1 və port 5001
-      // Qeyd: Serverində /api/upload marşrutu olmalıdır
-      const res = await fetch("http://127.0.0.1:5001/api/upload", { 
-        method: "POST", 
-        body: data 
-      });
-      
+      const res = await fetch("http://localhost:5002/api/upload", { method: "POST", body: data });
       const result = await res.json();
-      if (result.success) {
-          setFormData((prev) => ({ ...prev, image: result.url }));
-      } else {
-          console.error("Şəkil yüklənmədi:", result);
-      }
-    } catch (error) { 
-        console.error("Upload Xətası:", error); 
-    } finally { 
-        setUploading(false); 
-    }
+      if (result.success) setFormData((prev) => ({ ...prev, image: result.url }));
+    } catch (error) { console.error("Xəta:", error); } 
+    finally { setUploading(false); }
   };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    
-    // Login tokenini götürürük (əgər serverin qorunursa lazımdır)
-    const token = localStorage.getItem('token'); 
-
-    try {
-        // DÜZƏLİŞ 2: localhost -> 127.0.0.1
-        const res = await fetch("http://127.0.0.1:5001/api/products", {
-          method: "POST",
-          headers: { 
-              "Content-Type": "application/json",
-              // Tokeni göndəririk ki, server bilsin kimdir (lazım deyilsə silə bilərsən)
-              "Authorization": `Bearer ${token}` 
-          },
-          body: JSON.stringify(formData),
-        });
-
-        if (res.ok) {
-            router.push("/"); // Uğurludursa ana səhifəyə at
-        } else {
-            console.error("Məhsul yaradılmadı");
-        }
-    } catch (error) {
-        console.error("Fetch xətası:", error);
-    }
+    await fetch("http://localhost:5001/api/products", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+    router.push("/");
   };
 
   return (
