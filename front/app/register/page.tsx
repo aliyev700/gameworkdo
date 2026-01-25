@@ -39,7 +39,7 @@ export default function RegisterPage() {
       };
 
       await axios.post(
-        "http://localhost:5001/api/users", 
+        "http://localhost:127.0.0.1:5001/api/users", 
         {
           name: `${formData.firstName} ${formData.lastName}`,
           email: formData.email,

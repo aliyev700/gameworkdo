@@ -30,7 +30,7 @@ export default function ProductsPage() {
 
   const fetchProducts = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5001/api/products");
+      const { data } = await axios.get("http://localhost:127.0.0.1:5001/api/products");
       setProducts(data);
       setLoading(false);
     } catch (error) {
@@ -47,7 +47,7 @@ export default function ProductsPage() {
         const config = {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         };
-        await axios.delete(`http://localhost:5001/api/products/${id}`, config);
+        await axios.delete(`http://localhost:127.0.0.1:5001/api/products/${id}`, config);
         fetchProducts(); 
       } catch (error) {
         alert("Silmək mümkün olmadı.");

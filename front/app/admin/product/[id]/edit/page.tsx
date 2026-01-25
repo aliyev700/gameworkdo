@@ -27,7 +27,7 @@ export default function EditProductPage() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:5001/api/products/${productId}`);
+        const { data } = await axios.get(`http://localhost:127.0.0.1:5001/api/products/${productId}`);
         
         // Backend-dən gələn Array-ləri vergüllü stringə çeviririk ki, inputda görünsün
         setFormData({
@@ -73,7 +73,7 @@ export default function EditProductPage() {
           images: formData.images.split(",").map((s) => s.trim()),
       };
 
-      await axios.put(`http://localhost:5001/api/products/${productId}`, updatedProduct, config);
+      await axios.put(`http://localhost:127.0.0.1:5001/api/products/${productId}`, updatedProduct, config);
       
       alert("Məhsul uğurla yeniləndi!");
       router.push("/admin/dashboard"); // Və ya products səhifəsinə

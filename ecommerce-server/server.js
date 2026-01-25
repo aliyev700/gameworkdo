@@ -12,7 +12,7 @@ dotenv.config({ path: path.join(__dirname, '.env') });
 connectDb();
 
 const app = express();
-const port = process.env.PORT || 5001;
+const port = process.env.PORT || "127.0.0.1:5001";
 
 // Middleware-lər
 app.use(cors()); // CORS icazəsi (yalnız bir dəfə)
