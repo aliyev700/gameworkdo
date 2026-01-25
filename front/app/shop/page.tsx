@@ -97,7 +97,7 @@ const ShopPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-black">
             {/* Header */}
             <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-12">
                 <div className="container mx-auto px-4">
@@ -312,8 +312,8 @@ const ShopPage = () => {
                                                         </span>
                                                         <span
                                                             className={`text-sm font-semibold px-2 py-1 rounded ${product.countInStock > 0
-                                                                    ? 'bg-green-100 text-green-800'
-                                                                    : 'bg-red-100 text-red-800'
+                                                                ? 'bg-green-100 text-green-800'
+                                                                : 'bg-red-100 text-red-800'
                                                                 }`}
                                                         >
                                                             {product.countInStock > 0
