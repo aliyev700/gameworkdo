@@ -1,6 +1,7 @@
 "use client";
 
 import { FiFacebook, FiTwitter, FiInstagram, FiYoutube, FiMail, FiPhone, FiMapPin, FiArrowRight, FiCreditCard } from "react-icons/fi";
+import ChatBot from "./Chatbot";
 
 const Footer = () => {
     return (
@@ -194,6 +195,9 @@ const Footer = () => {
                     animation: gradient 3s ease infinite;
                 }
             `}</style>
+
+            <ChatBot />
+
         </footer>
     );
 };
