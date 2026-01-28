@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-// 1. Səbət üçün ayrıca kiçik bir sxem yaradırıq
+// 1. Səbət üçün sxem (olduğu kimi qalır)
 const cartItemSchema = new mongoose.Schema({
   product: {
     type: mongoose.Schema.Types.ObjectId,
@@ -12,17 +12,23 @@ const cartItemSchema = new mongoose.Schema({
     required: true,
     default: 1
   }
-}, { _id: false }); // _id: false qoyuruq ki, hər məhsul üçün lazımsız ID yaratmasın
+}, { _id: false }); 
 
 // 2. Əsas User sxemi
 const userSchema = mongoose.Schema(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    
+    // --- DƏYİŞİKLİK 1: required: true yerinə required: false yazırıq ---
+    // Çünki GitHub ilə girənlərin parolu olmur
+    password: { type: String, required: false }, 
+    
     isAdmin: { type: Boolean, required: true, default: false },
     
-    // Yuxarıda yaratdığımız sxemi bura veririk
+    // --- DƏYİŞİKLİK 2: Bunu əlavə edirik ---
+    githubId: { type: String }, 
+    
     cart: [cartItemSchema] 
   },
   {
