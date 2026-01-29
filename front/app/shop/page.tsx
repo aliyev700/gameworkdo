@@ -68,14 +68,14 @@ const ShopPage = () => {
         try {
             const response = await apiCall('/products');
             const data: Product[] = await response.json();
-            
+
             // XƏTA EHTİMALINI AZALTMAQ ÜÇÜN DÜZƏLİŞ:
             // Əgər category obyektdirsə, onun içindən .name götürürük, Stringdirsə özünü.
-            const uniqueCategories = [...new Set(data.map((p: any) => 
+            const uniqueCategories = [...new Set(data.map((p: any) =>
                 typeof p.category === 'object' ? p.category?.name : p.category
             ))].filter(Boolean);
 
-            const uniqueBrands = [...new Set(data.map((p: any) => 
+            const uniqueBrands = [...new Set(data.map((p: any) =>
                 typeof p.brand === 'object' ? p.brand?.name : p.brand
             ))].filter(Boolean);
 
@@ -264,7 +264,7 @@ const ShopPage = () => {
                                     <Link href={`/product/${product._id}`} key={product._id} className="group relative block">
                                         <div className="relative overflow-hidden bg-neutral-900 border border-neutral-800 rounded-lg transition-all duration-300">
                                             <div className="relative aspect-[3/4] overflow-hidden bg-neutral-950">
-                                                
+
                                                 {/* --- ƏSAS DÜZƏLİŞ BURADADIR --- */}
                                                 <img
                                                     src={product.image.startsWith('http') ? product.image : `http://localhost:5001${product.image}`}
