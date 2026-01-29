@@ -3,17 +3,9 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-// --- YENİ: Context-i çağırırıq ---
-import { useCart } from "@/app/context/CartContsxt"; // <--- BU SƏTİR ƏLAVƏ OLUNDU
-// ---------------------------------
-
 import {
     FiSearch, FiUser, FiShoppingCart, FiChevronDown, FiLogOut, FiMenu, FiX,
-    FiBookOpen,
-    FiShoppingBag,
-    FiInfo,
-    FiMail,
-    FiHelpCircle
+    FiBookOpen, FiShoppingBag, FiInfo, FiMail, FiHelpCircle
 } from "react-icons/fi";
 
 interface User {
@@ -24,41 +16,90 @@ interface User {
 }
 
 const Header = () => {
+    // --- 1. STATE DEFINITIONS ---
     const [user, setUser] = useState<User | null>(null);
     const [showDropdown, setShowDropdown] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-    // --- YENİ: Səbət sayını götürürük ---
-    const { cartCount } = useCart(); // <--- BU SƏTİR ƏLAVƏ OLUNDU
-    // ------------------------------------
+    // Logic State (Price and Count)
+    const [cartTotal, setCartTotal] = useState(0);
+    const [cartCount, setCartCount] = useState(0);
 
     const router = useRouter();
 
-    useEffect(() => {
-        if (typeof window !== "undefined") {
-            const storedUser = localStorage.getItem('userInfo');
-            if (storedUser) {
-                try {
-                    setUser(JSON.parse(storedUser));
-                } catch (error) {
-                    console.error('Failed to parse user:', error);
-                    localStorage.removeItem('userInfo');
-                }
-            }
+    // --- 2. API & LOGIC (The part that works) ---
+    const updateCartData = async () => {
+        // Get URL based on environment
+        const RAW_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
+        const API_BASE = RAW_URL.replace(/\/api\/?$/, "");
+
+        const userInfoString = localStorage.getItem('userInfo');
+
+        if (!userInfoString) {
+            setUser(null);
+            setCartTotal(0);
+            setCartCount(0);
+            return;
         }
+
+        try {
+            const userInfo = JSON.parse(userInfoString);
+            setUser(userInfo); // Set user for the UI
+
+            const token = userInfo.token;
+
+            // Fetch the cart
+            const res = await fetch(`${API_BASE}/api/cart`, {
+                headers: { 'Authorization': `Bearer ${token}` },
+                cache: "no-store"
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+
+                // Calculate Total Price
+                const total = data.reduce((acc: number, item: any) => {
+                    return acc + ((item.product?.price || 0) * item.quantity);
+                }, 0);
+
+                // Calculate Total Items
+                const count = data.reduce((acc: number, item: any) => acc + item.quantity, 0);
+
+                setCartTotal(total);
+                setCartCount(count);
+            }
+        } catch (error) {
+            console.error("Header Cart Error", error);
+        }
+    };
+
+    // --- 3. EVENT LISTENERS ---
+    useEffect(() => {
+        updateCartData(); // Run on mount
+
+        // Listen for updates from other components
+        const handleCartUpdate = () => updateCartData();
+        window.addEventListener("cartUpdated", handleCartUpdate);
+        window.addEventListener("storage", handleCartUpdate);
+
+        return () => {
+            window.removeEventListener("cartUpdated", handleCartUpdate);
+            window.removeEventListener("storage", handleCartUpdate);
+        };
     }, []);
 
     const handleLogout = () => {
         localStorage.removeItem('userInfo');
         localStorage.removeItem('token');
         setUser(null);
+        setCartTotal(0);
+        setCartCount(0);
         setShowDropdown(false);
         router.push('/login');
-        setTimeout(() => {
-            window.location.reload();
-        }, 100);
+        window.dispatchEvent(new Event("cartUpdated"));
     };
 
+    // --- 4. RENDER (EXACT DESIGN) ---
     return (
         <header className="w-full relative z-50">
 
@@ -164,23 +205,23 @@ const Header = () => {
                                                 className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2 rounded-b-lg"
                                             >
                                                 <FiLogOut />
-                                                Çıxış
+                                                Log Out
                                             </button>
                                         </div>
                                     )}
                                 </div>
                             ) : (
-                                <Link href="/login" className="text-2xl sm:text-3xl text-gray-600 hover:text-[#E60023] transition" title="Daxil ol">
+                                <Link href="/login" className="text-2xl sm:text-3xl text-gray-600 hover:text-[#E60023] transition" title="Log in">
                                     <FiUser />
                                 </Link>
                             )}
 
-                            {/* --- CART HİSSƏSİ DÜZƏLDİLDİ --- */}
+                            {/* --- CART SECTION (Visuals from Design, Data from Logic) --- */}
                             <Link href="/cart" className="flex items-center gap-3 group">
                                 <div className="relative text-2xl sm:text-3xl text-gray-600 group-hover:text-black">
                                     <FiShoppingCart />
 
-                                    {/* Əgər say 0-dan böyükdürsə rəqəmi göstərsin, yoxsa boş görünsün və ya 0 */}
+                                    {/* Badge Logic */}
                                     {cartCount > 0 && (
                                         <span className="absolute -top-2 -right-2 bg-[#E60023] text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold">
                                             {cartCount}
@@ -189,11 +230,13 @@ const Header = () => {
                                 </div>
                                 <div className="hidden sm:block text-right leading-tight">
                                     <span className="block text-xs text-gray-500 font-bold">My Cart:</span>
-                                    {/* Qiymət hələlik statikdir, istəsən onu da Context-ə əlavə edə bilərik */}
-                                    <span className="block text-sm font-black text-gray-900">$0.00</span>
+                                    {/* Price Logic */}
+                                    <span className="block text-sm font-black text-gray-900">
+                                        ${cartTotal.toFixed(2)}
+                                    </span>
                                 </div>
                             </Link>
-                            {/* ------------------------------ */}
+                            {/* -------------------------------------------------------- */}
 
                         </div>
                     </div>

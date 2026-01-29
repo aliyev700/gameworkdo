@@ -41,7 +41,7 @@ const ProductDetailPage = () => {
     const { updateCartCount } = useCart();
 
     // --- KÖMƏKÇİ FUNKSİYALAR ---
-    
+
     // 1. Şəkil linkini düzəldən funksiya
     const getImageUrl = (url: any) => {
         if (!url) return '';

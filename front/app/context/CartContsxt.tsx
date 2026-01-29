@@ -10,18 +10,18 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const updateCartCount = async () => {
     const token = localStorage.getItem('token');
     if (!token) {
-        setCartCount(0);
-        return;
+      setCartCount(0);
+      return;
     }
 
     try {
       // API URL-i öz portuna uyğun yoxla (5000 və ya 5001)
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
-      
+
       const res = await fetch(`${apiUrl}/cart`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
-      
+
       if (res.ok) {
         const data = await res.json();
         // Məhsulların sayını toplayırıq (quantity)

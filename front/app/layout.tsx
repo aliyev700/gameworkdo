@@ -6,7 +6,7 @@ import "./globals.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 // --- YENİ: Context-i import edirik ---
-import { CartProvider } from "./context/CartContsxt"; 
+import { CartProvider } from "./context/CartContsxt";
 // -------------------------------------
 
 const inter = Inter({ subsets: ["latin"] });
@@ -24,11 +24,11 @@ export default function RootLayout({
       <body className={inter.className}>
         {/* Bütün saytı CartProvider ilə qucaqlayırıq */}
         <CartProvider>
-            {!isAdminPage && <Header />}
-            <main className="min-h-screen">
-              {children}
-            </main>
-            {!isAdminPage && <Footer />}
+          {!isAdminPage && <Header />}
+          <main className="min-h-screen">
+            {children}
+          </main>
+          {!isAdminPage && <Footer />}
         </CartProvider>
         {/* ------------------------------------------- */}
       </body>

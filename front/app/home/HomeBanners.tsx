@@ -138,12 +138,12 @@ const HeroSection = () => {
                     </div>
 
                     {/* Middle Card - Best Offer */}
-                    <div className="relative overflow-hidden rounded-3xl group h-[700px]">
+                    <div className="relative overflow-hidden rounded-3xl group ">
                         <div className="absolute inset-0">
                             <img
-                                src="https://xboxwire.thesourcemediaassets.com/sites/2/2021/05/takeover_play_JPG.jpg"
+                                src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/02a13a101175739.5f18bc1264a3b.png"
                                 alt="Best Offer"
-                                className="w-full h-full object-cover"
+                                className=" object-cover"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
                         </div>
