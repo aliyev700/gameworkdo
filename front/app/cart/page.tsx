@@ -128,7 +128,7 @@ const CartPage = () => {
 
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center bg-black text-white">
-      <div className="animate-pulse text-red-600 font-bold">YÜKLƏNİR...</div>
+      <div className="animate-pulse text-red-600 font-bold">LOADING...</div>
     </div>
   );
 
@@ -136,14 +136,14 @@ const CartPage = () => {
     <div className="min-h-screen bg-black text-white pt-24 pb-10 px-6">
       <div className="container mx-auto max-w-5xl">
         <h1 className="text-4xl font-black mb-10 text-center uppercase tracking-tighter">
-          <span className="text-red-600">Sizin</span> Səbətiniz
+          <span className="text-red-600">Your</span> Cart
         </h1>
 
         {cartItems.length === 0 ? (
           <div className="text-center py-20 bg-neutral-900/30 rounded-2xl border border-neutral-800 border-dashed">
-            <p className="text-2xl font-bold text-neutral-400 mb-2">Səbətiniz boşdur 😕</p>
+            <p className="text-2xl font-bold text-neutral-400 mb-2">Your cart is empty 😕</p>
             <Link href="/shop" className="inline-block mt-4 bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition-all">
-              ALIŞ-VERİŞƏ BAŞLA
+              LET'S SHOP
             </Link>
           </div>
         ) : (
@@ -219,7 +219,7 @@ const CartPage = () => {
                 </p>
               </div>
               <button className="bg-white text-black hover:bg-neutral-200 px-10 py-4 rounded-xl font-black text-lg uppercase transition-colors">
-                Sifarişi Təsdiqlə
+                Confirm Order
               </button>
             </div>
           </div>
