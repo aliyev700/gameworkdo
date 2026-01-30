@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 interface CartItem {
   _id?: string;
@@ -16,11 +17,11 @@ interface CartItem {
 const CartPage = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
-  // --- 🔧 FIX 1: Normalize the URL ---
-  // If the .env variable has '/api' at the end, we remove it so we don't get double /api/api
+  // --- URL Tənzimləmələri ---
   const RAW_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
-  const API_BASE = RAW_URL.replace(/\/api\/?$/, ""); // Removes trailing '/api' or '/api/'
+  const API_BASE = RAW_URL.replace(/\/api\/?$/, "");
 
   const getToken = () => {
     if (typeof window !== 'undefined') {
@@ -39,8 +40,6 @@ const CartPage = () => {
       const token = getToken();
       if (!token) { setLoading(false); return; }
 
-      // --- 🔧 FIX 2: Correct Fetch Path ---
-      // Now it will always be localhost:5001 + /api/cart
       const res = await fetch(`${API_BASE}/api/cart`, {
         cache: 'no-store',
         headers: { 'Authorization': `Bearer ${token}` }
@@ -98,20 +97,15 @@ const CartPage = () => {
       if (res.ok) {
         setCartItems(prev => prev.filter(item => item.product._id !== productId));
         window.dispatchEvent(new Event("cartUpdated"));
-        alert("Məhsul silindi!");
-      } else {
-        alert("Xəta baş verdi, silinmədi.");
-      }
+      } 
     } catch (error) {
       console.error("Delete error:", error);
     }
   };
 
-  // --- 🔧 FIX 3: Image URL Logic ---
   const resolveImage = (img: string) => {
     if (!img) return '/placeholder.png';
     if (img.startsWith('http')) return img;
-    // Images usually live at root (localhost:5001/uploads), NOT inside /api
     return `${API_BASE}${img.startsWith('/') ? '' : '/'}${img}`;
   };
 
@@ -124,6 +118,11 @@ const CartPage = () => {
       const price = item.product?.price || 0;
       return acc + (price * item.quantity);
     }, 0).toFixed(2);
+  };
+
+  const handleCheckout = () => {
+     if(cartItems.length === 0) return;
+     router.push('/checkout'); 
   };
 
   if (loading) return (
@@ -151,15 +150,16 @@ const CartPage = () => {
             {cartItems.map((item, index) => (
               item.product ? (
                 <div key={item._id || index} className="relative group flex flex-col sm:flex-row items-center justify-between bg-neutral-900/50 border border-neutral-800 p-6 rounded-xl transition-all hover:border-neutral-600">
-
+                  
+                  {/* --- YENİLƏNMİŞ HİSSƏ: İçi dolu standart Zibil Qutusu --- */}
                   <button
                     onClick={() => removeFromCart(item.product._id)}
-                    className="absolute top-4 right-4 text-neutral-600 hover:text-red-600 transition-colors p-2"
+                    className="absolute top-4 right-4 text-neutral-500 hover:text-red-600 transition-colors p-2"
                     title="Sil"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                    </svg>
+                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                     <path fillRule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.814 15 4.69v.172a49.22 49.22 0 01-6 0v-.172c0-.876.61-1.64 1.364-1.666zm6.914 13.156l-.666-8.662a.75.75 0 00-1.492.115l.666 8.662a.75.75 0 001.492-.115zm-3.25 0l-.135-8.662a.75.75 0 00-1.498.057l.135 8.662a.75.75 0 001.498-.057zm-3.25 0l.4-8.662a.75.75 0 00-1.498-.057l-.4 8.662a.75.75 0 001.498.057z" clipRule="evenodd" />
+                   </svg>
                   </button>
 
                   <div className="flex items-center gap-6 mb-4 sm:mb-0 w-full sm:w-auto">
@@ -218,8 +218,12 @@ const CartPage = () => {
                   ${calculateTotal()}
                 </p>
               </div>
-              <button className="bg-white text-black hover:bg-neutral-200 px-10 py-4 rounded-xl font-black text-lg uppercase transition-colors">
-                Confirm Order
+              
+              <button 
+                onClick={handleCheckout}
+                className="bg-white text-black hover:bg-neutral-200 px-10 py-4 rounded-xl font-black text-lg uppercase transition-colors"
+              >
+                PROCEED TO CHECKOUT
               </button>
             </div>
           </div>

@@ -1,45 +1,49 @@
 const path = require('path');
 const dotenv = require('dotenv');
 
-// 1. Env faylını oxuyuruq
+// Env faylını oxuyuruq
 dotenv.config({ path: path.join(__dirname, '.env') });
 
 const express = require('express');
 const cors = require('cors');
 const connectDb = require('./config/db');
+const passport = require('passport'); // <--- 1. Bunu açdıq
 
-// --- YENİ: Passport Import ---
-const passport = require('passport'); 
-require('./config/passport'); // Yaratdığımız config faylını işə salır
+// Passport Config (Bu faylın mövcud olduğuna əmin ol: config/passport.js)
+require('./config/passport'); // <--- 2. Bunu açdıq
 
-// 2. Verilənlər bazasına qoşuluruq
+// Verilənlər bazasına qoşuluruq
 connectDb();
 
 const app = express();
 const port = process.env.PORT || 5001;
 
-// 3. Middleware-lər
-app.use(cors());
+// Middleware-lər
+app.use(cors({
+    origin: "*", 
+    credentials: true
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// --- YENİ: Passport Middleware (Bura mütləq lazımdır) ---
-app.use(passport.initialize());
+// Passport Middleware
+app.use(passport.initialize()); // <--- 3. Bunu açdıq
 
-// 4. Marşrutlar (Routes)
+// --- MARŞRUTLAR (Routes) ---
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/products', require('./routes/productRoutes'));
 app.use('/api/cart', require('./routes/cartRoutes'));
 app.use('/api/upload', require('./routes/uploadRoutes')); 
+app.use('/api/orders', require('./routes/orderRoutes')); 
 
-// --- YENİ: Auth Route (GitHub üçün ayrıca yol) ---
-// Bunu yaratmaq üçün növbəti addımda "authRoutes.js" faylı düzəldəcəyik
-app.use('/api/auth', require('./routes/authRoutes')); 
+// Auth Routes (GitHub üçün)
+app.use('/api/auth', require('./routes/authRoutes')); // <--- 4. Bunu açdıq
 
-// 5. Statik Qovluq
+// Statik Qovluq (Şəkillər üçün)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// 6. Xəta Tutucu
+// Xəta Tutucu
 app.use((err, req, res, next) => {
     const statusCode = res.statusCode ? res.statusCode : 500;
     res.status(statusCode).json({
@@ -49,5 +53,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(port, () => {
-    console.log(`Server ${port} portunda işləyir`);
+    console.log(`Server ${port} portunda işləyir...`);
 });
