@@ -42,8 +42,8 @@ const ChatBot = () => {
         if (contains(["nba", "2k", "basketball", "vc"]))
             return "🏀 **Ball is Life.** We have NBA 2K in stock. Need some VC to upgrade your MyPlayer? We have gift cards for that too.";
 
-        if (contains(["madden", "nfl", "american football"]))
-            return "🏈 **Touchdown!** The latest Madden NFL is available. Time to build your dynasty.";
+        if (contains(["doner", "pecat", "saurma"]))
+            return "😋 Yummy it is now 2.90 in Pecat-Doner.";
 
         if (contains(["ufc", "mma", "fighting", "wwe", "wrestling"]))
             return "🥊 **Fight Night:** We have UFC 5 and WWE 2K available. Step into the octagon or the ring!";
@@ -229,8 +229,8 @@ const ChatBot = () => {
                             >
                                 <div
                                     className={`max-w-[80%] p-3.5 text-sm shadow-sm leading-relaxed ${msg.sender === "user"
-                                            ? "bg-blue-600 text-white rounded-2xl rounded-br-sm"
-                                            : "bg-white text-gray-800 border border-gray-100 rounded-2xl rounded-bl-sm"
+                                        ? "bg-blue-600 text-white rounded-2xl rounded-br-sm"
+                                        : "bg-white text-gray-800 border border-gray-100 rounded-2xl rounded-bl-sm"
                                         }`}
                                 >
                                     <span dangerouslySetInnerHTML={{
@@ -277,8 +277,8 @@ const ChatBot = () => {
                             onClick={() => handleSend(inputValue)}
                             disabled={!inputValue.trim()}
                             className={`p-3 rounded-xl transition-all shadow-sm flex-shrink-0 ${inputValue.trim()
-                                    ? "bg-blue-600 text-white hover:bg-blue-700 hover:shadow-md transform hover:-translate-y-0.5"
-                                    : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                                ? "bg-blue-600 text-white hover:bg-blue-700 hover:shadow-md transform hover:-translate-y-0.5"
+                                : "bg-gray-200 text-gray-400 cursor-not-allowed"
                                 }`}
                         >
                             <FiSend className="text-lg" />
