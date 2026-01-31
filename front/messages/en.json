@@ -1,0 +1,81 @@
+{
+  "Header": {
+    "workingHours": "Monday - Friday: 8:00 AM - 9:00 PM",
+    "support": "Support 24/7",
+    "sendEmail": "Send Email",
+    "myCart": "My Cart"
+  },
+  "Navigation": {
+    "blog": "Blog",
+    "shopAll": "Shop All",
+    "aboutUs": "About Us",
+    "contact": "Contact",
+    "faq": "FAQ"
+  },
+  "Hero": {
+    "preOrder": "Pre-Order",
+    "preOrderBtn": "Preorder Now",
+    "size": "Size"
+  },
+  "Banners": {
+    "bestOffer": "Best Offer",
+    "snacksTitle": "Get all snacks in your Pocket",
+    "cashbackTitle": "Get Cash back 5%",
+    "cashbackDesc": "Get your earning back shop your needed",
+    "showMore": "Show more"
+  },
+  "Products": {
+    "latestArrivals": "Latest Arrivals",
+    "addToCart": "ADD TO CART",
+    "discover": "Discover",
+    "categories": {
+      "all": "ALL",
+      "stealth": "STEALTH",
+      "racing": "RACING",
+      "fighting": "FIGHTING",
+      "shooter": "SHOOTER",
+      "adventure": "ADVENTURE",
+      "football": "FOOTBALL",
+      "horror": "HORROR",
+      "action": "ACTION"
+    },
+    "bestsellers": "Bestsellers Categories",
+    "showMoreProducts": "Show more products"
+  },
+  "Stats": {
+    "bigFamily": "We are big family of partners",
+    "collaborating": "Collaborating with the biggest names in gaming",
+    "partners": "Gaming Partners",
+    "gamers": "Happy Gamers",
+    "gamesAvailable": "Games Available",
+    "supportAvailable": "Support Available"
+  },
+  "Reviews": {
+    "title": "Official Reviews",
+    "client": "Client",
+    "about": "about"
+  },
+  "Blog": {
+    "title": "Blog & Articles",
+    "subtitle": "There is a quality market for groceries...",
+    "readMore": "Read more"
+  },
+  "Newsletter": {
+    "title": "Subscribe to Our Newsletter",
+    "desc": "Get the latest updates, deals, and exclusive offers!",
+    "btn": "Subscribe"
+  },
+  "Footer": {
+    "description": "Your ultimate destination for premium gaming products. We deliver quality and excellence in every purchase.",
+    "quickLinks": "Quick Links",
+    "customerService": "Customer Service",
+    "getInTouch": "Get In Touch",
+    "shippingInfo": "Shipping Info",
+    "returns": "Returns",
+    "trackOrder": "Track Order",
+    "privacyPolicy": "Privacy Policy",
+    "termsConditions": "Terms & Conditions",
+    "rightsReserved": "All rights reserved.",
+    "weAccept": "We Accept"
+  }
+}

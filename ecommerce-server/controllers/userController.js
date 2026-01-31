@@ -1,8 +1,8 @@
 const User = require('../models/User');
-const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto'); 
 const sendEmail = require('../utils/sendEmail'); 
+
 
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -23,13 +23,12 @@ const registerUser = async (req, res) => {
             return res.status(400).json({ message: 'Bu email artıq istifadə olunub' });
         }
 
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
-
+       
+        
         const user = await User.create({
             name,
             email,
-            password: hashedPassword,
+            password, 
             isAdmin: false 
         });
 
@@ -56,7 +55,8 @@ const loginUser = async (req, res) => {
 
         const user = await User.findOne({ email });
 
-        if (user && (await bcrypt.compare(password, user.password))) {
+       
+        if (user && (await user.matchPassword(password))) {
             res.json({
                 _id: user.id,
                 name: user.name,
@@ -133,7 +133,6 @@ const resetPassword = async (req, res) => {
     const { password } = req.body;
   
     try {
-      
       const user = await User.findOne({
         resetPasswordToken: token,
         resetPasswordExpire: { $gt: Date.now() },
@@ -143,13 +142,13 @@ const resetPassword = async (req, res) => {
         return res.status(400).json({ message: "Keçərsiz və ya vaxtı bitmiş token" });
       }
 
-      const salt = await bcrypt.genSalt(10);
-      user.password = await bcrypt.hash(password, salt);
+     
+      user.password = password;
 
       user.resetPasswordToken = undefined;
       user.resetPasswordExpire = undefined;
   
-      await user.save();
+      await user.save(); 
   
       res.status(200).json({ success: true, message: "Parol uğurla yeniləndi" });
     } catch (error) {

@@ -1,0 +1,81 @@
+{
+  "Header": {
+    "workingHours": "Bazar ertəsi - Cümə: 08:00 - 21:00",
+    "support": "Dəstək 24/7",
+    "sendEmail": "Email göndər",
+    "myCart": "Səbətim"
+  },
+  "Navigation": {
+    "blog": "Bloq",
+    "shopAll": "Mağaza",
+    "aboutUs": "Haqqımızda",
+    "contact": "Əlaqə",
+    "faq": "Sual-Cavab"
+  },
+  "Hero": {
+    "preOrder": "Öncədən Sifariş",
+    "preOrderBtn": "İndi Sifariş Et",
+    "size": "Həcm"
+  },
+  "Banners": {
+    "bestOffer": "Ən Yaxşı Təklif",
+    "snacksTitle": "Bütün qəlyanaltılar cibinizdə",
+    "cashbackTitle": "5% Keşbek qazanın",
+    "cashbackDesc": "Ehtiyacınız olanı alın, qazancınızı geri qaytarın",
+    "showMore": "Daha çox"
+  },
+  "Products": {
+    "latestArrivals": "Yeni Gələnlər",
+    "addToCart": "SƏBƏTƏ AT",
+    "discover": "Kəşf et",
+    "categories": {
+      "all": "HAMISI",
+      "stealth": "GİZLİLİK",
+      "racing": "YARIŞ",
+      "fighting": "DÖYÜŞ",
+      "shooter": "ATIŞMA",
+      "adventure": "MACƏRA",
+      "football": "FUTBOL",
+      "horror": "QORXU",
+      "action": "EKŞN"
+    },
+    "bestsellers": "Ən Çox Satılanlar",
+    "showMoreProducts": "Daha çox məhsul"
+  },
+  "Stats": {
+    "bigFamily": "Biz böyük tərəfdaş ailəsiyik",
+    "collaborating": "Oyun dünyasının ən böyük adları ilə əməkdaşlıq edirik",
+    "partners": "Oyun Tərəfdaşları",
+    "gamers": "Xoşbəxt Oyunçular",
+    "gamesAvailable": "Mövcud Oyunlar",
+    "supportAvailable": "Dəstək Mövcuddur"
+  },
+  "Reviews": {
+    "title": "Rəsmi Rəylər",
+    "client": "Müştəri",
+    "about": "haqqında"
+  },
+  "Blog": {
+    "title": "Bloq və Məqalələr",
+    "subtitle": "Burada keyfiyyətli məhsullar bazarı var...",
+    "readMore": "Daha çox oxu"
+  },
+  "Newsletter": {
+    "title": "Xəbərlərimizə Abunə Olun",
+    "desc": "Ən son yenilikləri, endirimləri və özəl təklifləri əldə edin!",
+    "btn": "Abunə ol"
+  },
+  "Footer": {
+    "description": "Premium oyun məhsulları üçün son ünvanınız. Hər alışda keyfiyyət və mükəmməllik təqdim edirik.",
+    "quickLinks": "Cəld Keçidlər",
+    "customerService": "Müştəri Xidmətləri",
+    "getInTouch": "Bizimlə Əlaqə",
+    "shippingInfo": "Çatdırılma Məlumatı",
+    "returns": "Qaytarılma",
+    "trackOrder": "Sifarişi İzlə",
+    "privacyPolicy": "Məxfilik Siyasəti",
+    "termsConditions": "Şərtlər və Qaydalar",
+    "rightsReserved": "Bütün hüquqlar qorunur.",
+    "weAccept": "Qəbul edirik"
+  }
+}
