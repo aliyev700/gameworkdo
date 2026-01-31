@@ -13,41 +13,62 @@ export default function ForgotPassword() {
     setError("");
 
     try {
-      
       const res = await axios.post("http://127.0.0.1:5001/api/users/forgot-password", { email });
-      setMessage("Email uğurla göndərildi! Zəhmət olmasa poçt qutunuzu yoxlayın.");
+      setMessage("Email sent successfully! Please check your inbox.");
     } catch (err: any) {
-      setError(err.response?.data?.message || "Xəta baş verdi");
+      setError(err.response?.data?.message || "An error occurred");
     }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Parolu Unutmusan?</h2>
-        
-        {message && <p className="bg-green-100 text-green-700 p-3 rounded mb-4">{message}</p>}
-        {error && <p className="bg-red-100 text-red-700 p-3 rounded mb-4">{error}</p>}
+    <div className="flex min-h-screen items-center justify-center bg-gray-900 text-gray-200">
 
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">Email Adresiniz</label>
+      <div className="w-full max-w-md bg-gray-800 p-8 rounded-xl shadow-2xl border border-gray-700">
+
+        <h2 className="text-3xl font-bold mb-6 text-center text-white">Forgot Password?</h2>
+        <p className="text-gray-400 text-center mb-6 text-sm">
+          Enter your email address and we'll send you a link to reset your password.
+        </p>
+
+        {message && (
+          <div className="bg-green-900/30 border border-green-800 text-green-300 p-3 rounded-lg mb-4 text-sm">
+            {message}
+          </div>
+        )}
+
+        {error && (
+          <div className="bg-red-900/30 border border-red-800 text-red-300 p-3 rounded-lg mb-4 text-sm">
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label className="block text-gray-300 text-sm font-medium mb-2">
+              Email Address
+            </label>
             <input
               type="email"
-              className="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
-              placeholder="email@numune.com"
+              className="w-full p-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              placeholder="name@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
+
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white p-3 rounded hover:bg-blue-700 transition font-bold"
+            className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-500 hover:shadow-lg transition-all font-semibold"
           >
-            Linki Göndər
+            Send Reset Link
           </button>
         </form>
+
+        <div className="mt-6 text-center">
+          <a href="/login" className="text-sm text-gray-400 hover:text-blue-400 transition-colors">Back to Login</a>
+        </div>
+
       </div>
     </div>
   );
