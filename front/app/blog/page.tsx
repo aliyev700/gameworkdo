@@ -11,13 +11,13 @@ const AboutPage = () => {
 
   const cards = [
     {
-      img: "https://substackcdn.com/image/fetch/$s_!fcDA!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fec73ddd9-ca39-4187-9e78-9dd34af68813_1080x1350.webp",
+      img: "https://img.asmedia.epimg.net/resizer/v2/6GX4G4N6HZBVJMYB2U4WOWECVI.jpg?auth=c4bfd5e00f1def371f27f6afa06d336af9703e7990f1875b982fab865f653ab5&width=1472&height=1104&smart=true",
       title: "Exposition ARCANE Gamer...",
       text: "Many arcade games have short levels, simple and intuitive control schemes, and rapidly increasing...",
       link: "/blog/arcade"
     },
     {
-      img: "https://image.api.playstation.com/vulcan/ap/rnd/202304/1709/d7cdecd137b89048c25f8a08c9a537792be5d3afec03002a.png",
+      img: "https://goosed.ie/wp-content/uploads/2024/12/ufc-5-connor.webp",
       title: "Playing Through the UFC...",
       text: "Arising alongside video game development in the 1980s, the term gameplay was used solely within...",
       link: "/blog/through-the-game"
@@ -29,7 +29,7 @@ const AboutPage = () => {
       link: "/blog/fifagame"
     },
     {
-      img: "https://images.steamusercontent.com/ugc/2057627333613047058/F6FB29270FDA6A8E4661E4ADC85FA9165EE57A34/?imw=512&&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false",
+      img: "https://thecosmiccircus.com/wp-content/uploads/2023/09/MK-1-banner.png",
       title: "Mortal Combat and Games...",
       text: "The right side of the device offers a port that allows a user to connect to system via a link...",
       link: "/blog/mortalcombat"

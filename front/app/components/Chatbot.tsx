@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { FiMessageSquare, FiX, FiSend, FiCpu, FiHelpCircle } from "react-icons/fi";
+import { FiMessageSquare, FiX, FiSend, FiCpu, FiShoppingBag } from "react-icons/fi";
 
 interface Message {
     id: number;
@@ -14,7 +14,7 @@ const ChatBot = () => {
     const [isTyping, setIsTyping] = useState(false);
     const [inputValue, setInputValue] = useState("");
     const [messages, setMessages] = useState<Message[]>([
-        { id: 1, text: "Hello! I am GameBot 🤖. Ask me about stock, specific games, warranties, or store policies!", sender: "bot" }
+        { id: 1, text: "Hello! I am GameBot 🤖. I know about almost every game in stock. Try me!", sender: "bot" }
     ]);
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -23,105 +23,161 @@ const ChatBot = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
 
-    useEffect(scrollToBottom, [messages, isTyping]);
+    useEffect(scrollToBottom, [messages, isTyping, isOpen]);
+
+    const quickActions = [
+        "Trade-in Prices 💰",
+        "Do you have FC 25? ⚽",
+        "PS5 Consoles 🎮",
+        "Store Hours ⏰"
+    ];
 
     const getBotResponse = (text: string) => {
         const lowerText = text.toLowerCase();
+        const contains = (keywords: string[]) => keywords.some(keyword => lowerText.includes(keyword));
 
-        const contains = (keywords: string[]) => {
-            return keywords.some(keyword => lowerText.includes(keyword));
-        };
+        if (contains(["fifa", "fc 24", "fc 25", "soccer", "football", "ea sports", "ultimate team", "fut"]))
+            return "⚽ **EA Sports FC is here!** We have the latest FC (formerly FIFA) in stock. We also sell FC Points for your Ultimate Team packs. Are you looking for PS5, Xbox, or Switch?";
 
-        if (contains(["hello", "hi", "hey", "sup", "yo"]))
-            return "Greetings, Player 1! 👋 How can I help you level up today?";
-        if (contains(["bye", "goodbye", "later"]))
-            return "GG! Have a great day. 👋";
-        if (contains(["who are you", "what are you"]))
-            return "I am GameBot v2.0. I run on caffeine and high-performance code. ☕";
-        if (contains(["thank", "thx"]))
-            return "You're welcome! Happy gaming! 🎮";
+        if (contains(["nba", "2k", "basketball", "vc"]))
+            return "🏀 **Ball is Life.** We have NBA 2K in stock. Need some VC to upgrade your MyPlayer? We have gift cards for that too.";
 
-        if (contains(["gta", "grand theft auto"]))
-            return "GTA V is in stock! If you're asking about GTA VI, we're all waiting patiently... pre-orders aren't open yet!";
-        if (contains(["minecraft", "craft"]))
-            return "We have Minecraft for all platforms. Looking for Minecoins or the Bedrock Edition?";
-        if (contains(["cod", "call of duty", "warzone"]))
-            return "Stay frosty! 🔫 We have the latest Call of Duty in stock (Modern Warfare & Black Ops).";
-        if (contains(["fifa", "fc 24", "fc 25", "soccer", "football"]))
-            return "EA Sports FC is available! Ready to hit the pitch? ⚽";
-        if (contains(["mario", "zelda", "pokemon"]))
-            return "Nintendo royalty! 👑 We have a huge selection of Switch exclusives in the 'Nintendo' section.";
-        if (contains(["souls", "elden ring", "bloodborne", "sekiro"]))
-            return "Prepare to die... a lot. ⚔️ We have the full FromSoftware catalog for those seeking a challenge.";
-        if (contains(["fortnite", "vbuck", "v-buck"]))
-            return "We don't sell the base game (it's free!), but we DO sell V-Bucks cards and exclusive skin bundles.";
+        if (contains(["madden", "nfl", "american football"]))
+            return "🏈 **Touchdown!** The latest Madden NFL is available. Time to build your dynasty.";
+
+        if (contains(["ufc", "mma", "fighting", "wwe", "wrestling"]))
+            return "🥊 **Fight Night:** We have UFC 5 and WWE 2K available. Step into the octagon or the ring!";
+
+        if (contains(["mlb", "baseball", "the show"]))
+            return "⚾ **Home Run!** MLB The Show is in stock. It's the best baseball sim out there.";
+
+        if (contains(["forza", "horizon", "motorsport"]))
+            return "🏎️ **Xbox Racer:** Forza Horizon is a masterpiece. We have it in stock, or you can play it via Game Pass Ultimate (which we sell!).";
+
+        if (contains(["gran turismo", "gt7"]))
+            return "🏎️ **The Real Driving Simulator.** Gran Turismo 7 looks incredible on PS5. Do you need a racing wheel to go with it?";
+
+        if (contains(["need for speed", "nfs", "crew", "burnout"]))
+            return "🚔 **Pedal to the metal!** We have the latest Need for Speed. Don't get busted.";
+
+        if (contains(["cod", "call of duty", "mw3", "black ops", "warzone"]))
+            return "🔫 **Stay Frosty.** We have the newest Call of Duty. Remember, switching to your pistol is always faster than reloading!";
+
+        if (contains(["fortnite", "vbuck", "battle royale"]))
+            return "🪂 **Victory Royale!** The game is free, but we sell V-Bucks cards, Minty Legends packs, and controllers to help you crank 90s.";
+
+        if (contains(["valorant", "riot", "league", "lol"]))
+            return "🎯 **Riot Games:** Valorant and League are free-to-play on PC! We sell Riot Points (RP) cards for your skins.";
+
+        if (contains(["overwatch", "ow2"]))
+            return "🦸 **Heroes Never Die!** We stock coins for the Overwatch Battle Pass.";
+
+        if (contains(["halo", "master chief"]))
+            return "🌌 **Finish the Fight.** Halo Infinite is available for Xbox. Master Chief is waiting.";
+
+        if (contains(["gta", "grand theft auto", "rockstar"]))
+            return "⭐️ **GTA V:** A classic that never dies. As for GTA VI... we are all waiting for 2025. 🌴";
+
+        if (contains(["rdr", "red dead", "cowboy", "arthur"]))
+            return "🤠 **Outlaws for Life.** Red Dead Redemption 2 is a masterpiece. Have some faith, Arthur!";
+
+        if (contains(["god of war", "kratos", "ragnarok"]))
+            return "🪓 **Boy!** God of War Ragnarök is in stock for PS5 and PS4. It is an absolute must-play.";
+
+        if (contains(["spiderman", "spider-man", "miles morales"]))
+            return "🕸️ **Thwip!** Marvel's Spider-Man 2 is spectacular. We have copies available.";
+
+        if (contains(["assassin", "creed", "mirage", "shadows"]))
+            return "🦅 **Nothing is true, everything is permitted.** We have the latest Assassin's Creed titles in stock.";
+
+        if (contains(["last of us", "tlou", "joel", "ellie"]))
+            return "🍄 **Endure and Survive.** The Last of Us Part I and II are available. Bring tissues, it's emotional.";
+
+        if (contains(["mario", "odyssey", "wonder", "kart", "party"]))
+            return "🍄 **It's-a me!** We have Mario Wonder, Mario Kart 8, and Mario Party. Perfect for family game night.";
+
+        if (contains(["zelda", "link", "totk", "botw", "tears"]))
+            return "🗡️ **Hyrule calls.** Tears of the Kingdom is in stock. It's dangerous to go alone, take this game!";
+
+        if (contains(["smash", "bros"]))
+            return "🥊 **SETTLE IT IN SMASH!** Super Smash Bros Ultimate is available. Who is your main?";
+
+        if (contains(["animal crossing", "new horizons", "acnh"]))
+            return "🍃 **Island Life.** Yes, you can pay off your debt to Tom Nook. We have Animal Crossing in stock.";
+
+        if (contains(["elden ring", "souls", "bloodborne", "sekiro", "fromsoft"]))
+            return "⚔️ **Prepare to Die.** We have Elden Ring (and the DLC). A truly challenging masterpiece.";
+
+        if (contains(["cyberpunk", "2077", "phantom liberty"]))
+            return "🦾 **Wake up, Samurai.** Cyberpunk 2077 is fixed and amazing now. Highly recommended on next-gen consoles.";
+
+        if (contains(["final fantasy", "ff7", "ff16", "rebirth"]))
+            return "🗡️ **Fantasy Awaits.** Final Fantasy VII Rebirth and XVI are in stock. The graphics are insane.";
+
+        if (contains(["bg3", "baldurs gate", "dnd"]))
+            return "🎲 **Critical Success!** Baldur's Gate 3 is available. Be careful with the Mind Flayers.";
+
+        if (contains(["hogwarts", "legacy", "harry potter"]))
+            return "🪄 **You're a wizard!** Hogwarts Legacy is available on all platforms (Switch, PS5, Xbox).";
+
+        if (contains(["resident evil", "village", "biohazard"]))
+            return "🧟 **Umbrella Corp:** We have the Resident Evil Remakes and Village. Lady Dimitrescu is waiting...";
+
+        if (contains(["silent hill"]))
+            return "🌫️ **In my restless dreams...** The Silent Hill 2 Remake is here. Play with the lights on.";
+
+        if (contains(["fnaf", "freddy", "five nights"]))
+            return "🐻 **Security Alert:** We have FNAF: Security Breach and Help Wanted. Don't run out of power!";
+
+        if (contains(["tekken"]))
+            return "👊 **Get ready for the next battle!** Tekken 8 is amazing. We have it in stock.";
+
+        if (contains(["street fighter", "sf6"]))
+            return "👊 **Hadouken!** Street Fighter 6 is available. Modern controls make it easy to learn!";
+
+        if (contains(["mortal kombat", "mk1"]))
+            return "🩸 **FINISH HIM!** Mortal Kombat 1 is in stock. Not for the faint of heart!";
+
+        if (contains(["minecraft", "blocks"]))
+            return "⛏️ **Creeper? Aww man.** Minecraft is available on everything. We also sell Minecoins.";
+
         if (contains(["roblox", "robux"]))
-            return "Oof! We stock Robux gift cards in various amounts. They make great gifts.";
+            return "🟥 **OOF!** We don't sell physical Roblox games (it's free), but we have plenty of Robux Gift Cards!";
 
-        if (contains(["controller", "gamepad", "joycon", "stick drift"]))
-            return "We sell DualSense (PS5), Xbox Wireless, and Joy-Cons. If you have stick drift, we also sell repair kits or replacements!";
-        if (contains(["headset", "headphones", "audio", "mic"]))
-            return "Hearing footsteps is key! 🎧 Check out our HyperX, SteelSeries, and Sony Pulse headsets.";
-        if (contains(["ps5", "playstation"]))
-            return "The PS5 is a beast. We stock the Disc, Digital, and the new 'Slim' models.";
-        if (contains(["xbox", "series x", "series s"]))
-            return "Power your dreams. We have both Series X (the fridge) and Series S (the toaster) in stock. 😉";
-        if (contains(["switch", "nintendo console"]))
-            return "Play at home or on the go. We stock the OLED, Standard, and Lite models.";
-        if (contains(["pc", "graphics card", "gpu", "keyboard", "mouse"]))
-            return "PC Master Race? 🖥️ We sell mechanical keyboards (Razer/Logitech) and high-performance mice.";
+        if (contains(["lego", "star wars"]))
+            return "🧱 **True Jedi.** We have LEGO Star Wars: The Skywalker Saga and other LEGO titles.";
 
-        if (contains(["trade", "sell", "used", "pre-owned"]))
-            return "Yes! We accept trade-ins for consoles and physical games. Bring them to our store for a quote.";
-        if (contains(["repair", "fix", "broken"]))
-            return "We offer console repair services for HDMI ports, disc drives, and overheating issues.";
-        if (contains(["gift card", "voucher"]))
-            return "We have gift cards for PlayStation Network, Xbox Live, Nintendo eShop, Steam, and our own store!";
-        if (contains(["location", "address", "where are you"]))
-            return "We are digital right now, but our HQ is located in the Gaming District (Level 1).";
+        if (contains(["trade", "sell", "selling", "swap"]))
+            return "💰 **Trade-Ins:** We buy your old games and consoles! You get **20% more** if you choose Store Credit instead of Cash. Bring them in for a quote.";
 
-        if (contains(["price", "cost", "expensive"]))
-            return "Our prices are competitive! New AAA games are usually $60-$70, while indies and older titles are cheaper.";
-        if (contains(["ship", "delivery", "long"]))
-            return "Free shipping on orders over $100! 🚚 Standard delivery is 3-5 business days. Express is 1-2 days.";
-        if (contains(["return", "refund", "money back"]))
-            return "Physical games: 30-day return if unopened. Digital codes: Non-refundable once viewed/emailed.";
-        if (contains(["warranty", "guarantee"]))
-            return "New consoles come with a 1-year manufacturer warranty. We also offer extended protection plans.";
+        if (contains(["return", "refund", "broken"]))
+            return "🛡️ **Warranty:** 7 days for used games, 30 days for new (unopened). Consoles have a 3-month store warranty.";
 
-        if (contains(["lag", "slow", "fps"]))
-            return "Lag is the enemy! Check your internet connection, or try lowering your graphics settings if on PC.";
-        if (contains(["install", "download"]))
-            return "If a disc won't install, check for scratches. If a digital download is stuck, try restarting your router.";
+        if (contains(["price", "cost", "how much"]))
+            return "🏷️ **Pricing:** New PS5/Xbox games are usually $69.99. Switch games are $59.99. Used games are cheaper! Ask for a specific title.";
 
-        if (contains(["best game", "recommend"]))
-            return "Subjective! But 'The Witcher 3', 'Red Dead 2', and 'Baldur\'s Gate 3' are must-plays.";
-        if (contains(["cake"]))
-            return "The cake is a lie. 🍰 (Portal reference!)";
-        if (contains(["arrow"]))
-            return "I used to be an adventurer like you, then I took an arrow in the knee. 🏹";
-        if (contains(["konami", "up up down down"]))
-            return "Cheat code activated! 🚀 Just kidding, but you have great taste in classics.";
-        if (contains(["gg", "good game"]))
-            return "GG WP! (Good Game, Well Played)";
-        if (contains(["noob", "n00b"]))
-            return "Hey, we were all level 1 once. Keep practicing! 💪";
+        if (contains(["hello", "hi", "hey", "sup"]))
+            return "👋 Welcome to the store! I can help you find games, check prices, or explain trade-ins.";
 
-        return "My dialogue tree doesn't have a response for that yet. 🌲 Try asking about 'Shipping', 'PS5', 'Zelda', or 'Returns'.";
+        if (contains(["thank", "cool", "ok"]))
+            return "👍 You got it! Let me know if you need anything else.";
+
+        const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(text)}`;
+        return `🤔 I haven't played that one yet. You can check Google:<br/><br/><a href="${googleUrl}" target="_blank" class="text-blue-600 font-bold underline hover:text-blue-800">🔎 Search for "${text}"</a>`;
     };
 
-    const handleSend = () => {
-        if (!inputValue.trim()) return;
+    const handleSend = (text: string) => {
+        if (!text.trim()) return;
 
-        const newUserMsg: Message = { id: Date.now(), text: inputValue, sender: "user" };
+        const newUserMsg: Message = { id: Date.now(), text: text, sender: "user" };
         setMessages((prev) => [...prev, newUserMsg]);
         setInputValue("");
         setIsTyping(true);
 
-        const typingTime = Math.random() * 500 + 800; 
+        const typingTime = Math.random() * 800 + 400;
 
         setTimeout(() => {
-            const botResponseText = getBotResponse(newUserMsg.text);
+            const botResponseText = getBotResponse(text);
             const newBotMsg: Message = { id: Date.now() + 1, text: botResponseText, sender: "bot" };
             setMessages((prev) => [...prev, newBotMsg]);
             setIsTyping(false);
@@ -129,81 +185,99 @@ const ChatBot = () => {
     };
 
     const handleKeyPress = (e: React.KeyboardEvent) => {
-        if (e.key === "Enter") handleSend();
+        if (e.key === "Enter") handleSend(inputValue);
     };
 
     return (
         <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end font-sans">
 
-            {}
             {isOpen && (
-                <div className="mb-4 w-[350px] max-w-[90vw] bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200 animate-fade-in-up flex flex-col h-[500px]">
+                <div className="mb-4 w-[380px] max-w-[90vw] bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200 animate-fade-in-up flex flex-col h-[600px]">
 
-                    {}
-                    <div className="bg-gradient-to-r from-red-600 to-red-500 p-4 flex justify-between items-center text-white shadow-md">
+                    <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-4 flex justify-between items-center text-white shadow-md">
                         <div className="flex items-center gap-3">
-                            <div className="bg-white/20 p-2 rounded-full backdrop-blur-sm">
-                                <FiCpu className="text-xl" />
+                            <div className="relative">
+                                <div className="bg-white/20 p-2 rounded-full backdrop-blur-sm">
+                                    <FiCpu className="text-xl" />
+                                </div>
+                                <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-400 border-2 border-indigo-600 rounded-full animate-pulse"></span>
                             </div>
                             <div>
-                                <h3 className="font-bold text-sm tracking-wide">GameBot Support</h3>
-                                <span className="text-[10px] opacity-90 flex items-center gap-1 font-medium">
-                                    <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse border border-green-200"></span>
-                                    SYSTEM ONLINE
+                                <h3 className="font-bold text-base tracking-wide">GameStore AI</h3>
+                                <span className="text-xs opacity-90 font-medium text-blue-100 flex items-center gap-1">
+                                    <FiShoppingBag /> Sales & Support
                                 </span>
                             </div>
                         </div>
-                        <button onClick={() => setIsOpen(false)} className="hover:bg-white/20 p-1.5 rounded-lg transition">
-                            <FiX className="text-lg" />
+                        <button
+                            onClick={() => setIsOpen(false)}
+                            className="hover:bg-white/20 p-2 rounded-full transition duration-200"
+                        >
+                            <FiX className="text-xl" />
                         </button>
                     </div>
 
-                    {}
                     <div className="flex-1 p-4 overflow-y-auto bg-gray-50 space-y-4 scrollbar-thin scrollbar-thumb-gray-300">
+                        <div className="text-center text-xs text-gray-400 my-2">
+                            <span>Today</span>
+                        </div>
+
                         {messages.map((msg) => (
                             <div
                                 key={msg.id}
                                 className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
                             >
                                 <div
-                                    className={`max-w-[80%] p-3.5 text-sm shadow-sm ${msg.sender === "user"
-                                            ? "bg-red-600 text-white rounded-2xl rounded-br-none"
-                                            : "bg-white text-gray-800 border border-gray-100 rounded-2xl rounded-bl-none"
+                                    className={`max-w-[80%] p-3.5 text-sm shadow-sm leading-relaxed ${msg.sender === "user"
+                                            ? "bg-blue-600 text-white rounded-2xl rounded-br-sm"
+                                            : "bg-white text-gray-800 border border-gray-100 rounded-2xl rounded-bl-sm"
                                         }`}
                                 >
-                                    {msg.text}
+                                    <span dangerouslySetInnerHTML={{
+                                        __html: msg.text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                                    }} />
                                 </div>
                             </div>
                         ))}
 
-                        {}
                         {isTyping && (
                             <div className="flex justify-start">
                                 <div className="bg-white border border-gray-100 p-4 rounded-2xl rounded-bl-none flex gap-1.5 shadow-sm">
-                                    <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"></span>
-                                    <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce delay-75"></span>
-                                    <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce delay-150"></span>
+                                    <span className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce"></span>
+                                    <span className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce delay-75"></span>
+                                    <span className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce delay-150"></span>
                                 </div>
                             </div>
                         )}
                         <div ref={messagesEndRef} />
                     </div>
 
-                    {}
+                    <div className="bg-gray-50 px-4 pb-2 flex gap-2 overflow-x-auto scrollbar-hide py-2">
+                        {quickActions.map((action, idx) => (
+                            <button
+                                key={idx}
+                                onClick={() => handleSend(action)}
+                                className="whitespace-nowrap bg-white border border-blue-200 text-blue-600 text-xs font-semibold px-3 py-1.5 rounded-full hover:bg-blue-50 transition shadow-sm"
+                            >
+                                {action}
+                            </button>
+                        ))}
+                    </div>
+
                     <div className="p-3 bg-white border-t border-gray-100 flex gap-2 items-center">
                         <input
                             type="text"
                             value={inputValue}
                             onChange={(e) => setInputValue(e.target.value)}
                             onKeyDown={handleKeyPress}
-                            placeholder="Type a message..."
-                            className="flex-1 bg-gray-100 text-gray-800 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-red-500/20 focus:bg-white transition-all border border-transparent focus:border-red-100"
+                            placeholder="Ask about FIFA, COD, Trade-ins..."
+                            className="flex-1 bg-gray-100 text-gray-800 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-500/20 focus:bg-white transition-all border border-transparent focus:border-blue-100 placeholder-gray-400"
                         />
                         <button
-                            onClick={handleSend}
+                            onClick={() => handleSend(inputValue)}
                             disabled={!inputValue.trim()}
-                            className={`p-3 rounded-xl transition-all shadow-sm ${inputValue.trim()
-                                    ? "bg-red-600 text-white hover:bg-red-700 hover:shadow-md transform hover:-translate-y-0.5"
+                            className={`p-3 rounded-xl transition-all shadow-sm flex-shrink-0 ${inputValue.trim()
+                                    ? "bg-blue-600 text-white hover:bg-blue-700 hover:shadow-md transform hover:-translate-y-0.5"
                                     : "bg-gray-200 text-gray-400 cursor-not-allowed"
                                 }`}
                         >
@@ -213,15 +287,17 @@ const ChatBot = () => {
                 </div>
             )}
 
-            {}
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="group w-14 h-14 bg-red-600 text-white rounded-full shadow-[0_4px_14px_0_rgba(220,38,38,0.39)] flex items-center justify-center text-2xl hover:scale-105 hover:bg-red-700 transition-all duration-300"
+                className="group relative w-16 h-16 bg-blue-600 text-white rounded-full shadow-[0_4px_20px_0_rgba(37,99,235,0.4)] flex items-center justify-center text-2xl hover:scale-105 hover:bg-blue-700 transition-all duration-300"
             >
+                {!isOpen && (
+                    <span className="absolute top-0 right-0 w-4 h-4 bg-red-500 rounded-full border-2 border-white animate-pulse"></span>
+                )}
                 {isOpen ? (
-                    <FiX className="transform transition-transform group-hover:rotate-90" />
+                    <FiX className="transform transition-transform duration-300 group-hover:rotate-90" />
                 ) : (
-                    <FiMessageSquare className="transform transition-transform group-hover:scale-110" />
+                    <FiMessageSquare className="transform transition-transform duration-300 group-hover:scale-110" />
                 )}
             </button>
 
@@ -232,6 +308,13 @@ const ChatBot = () => {
                 }
                 .animate-fade-in-up {
                     animation: fadeInUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+                }
+                .scrollbar-hide::-webkit-scrollbar {
+                    display: none;
+                }
+                .scrollbar-hide {
+                    -ms-overflow-style: none;
+                    scrollbar-width: none;
                 }
             `}</style>
         </div>

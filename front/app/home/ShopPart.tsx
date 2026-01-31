@@ -19,7 +19,7 @@ interface Game {
 }
 
 const LatestArrivals = () => {
-    
+
     const [games, setGames] = useState<Game[]>([]);
     const [allGames, setAllGames] = useState<Game[]>([]);
     const [loading, setLoading] = useState(true);
@@ -57,7 +57,7 @@ const LatestArrivals = () => {
 
         try {
             setAddingId(game._id);
-            
+
             const res = await fetch('http://localhost:5001/api/cart/add', {
                 method: 'POST',
                 headers: {
@@ -145,7 +145,7 @@ const LatestArrivals = () => {
         <section className="bg-black py-16 md:py-24">
             <div className="max-w-390 mx-auto px-4 sm:px-6">
 
-                {}
+                { }
                 <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-12 gap-6">
                     <div>
                         <span className="text-purple-500 font-mono text-sm font-bold tracking-widest uppercase mb-2 block">
@@ -181,7 +181,7 @@ const LatestArrivals = () => {
                     </div>
                 </div>
 
-                {}
+                { }
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                     {games.length > 0 ? (
                         games.slice(0, 4).map((game) => (

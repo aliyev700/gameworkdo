@@ -100,7 +100,7 @@ const FAQPage = () => {
                             {/* Question Header */}
                             <button
                                 onClick={() => toggleFAQ(index)}
-                                className="w-full flex items-center justify-between p-6 text-left focus:outline-none"
+                                className="w-full flex items-center justify-between p-6 text-left cursor-pointer focus:outline-none"
                             >
                                 <span className={`font-semibold text-lg transition-colors ${openIndex === index ? 'text-white' : 'text-neutral-300 group-hover:text-white'}`}>
                                     {faq.question}
