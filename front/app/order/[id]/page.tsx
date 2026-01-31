@@ -6,13 +6,13 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function OrderDetailsPage({ params }: { params: Promise<{ id: string }> }) {
-  
+
   const { id } = use(params);
   const router = useRouter();
 
   const [order, setOrder] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(""); 
+  const [error, setError] = useState("");
   const [userInfo, setUserInfo] = useState<any>(null);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
 
       } catch (err: any) {
         console.error(err);
-        
+
         setError(err.response?.data?.message || err.message || "Sifariş tapılmadı");
       } finally {
         setLoading(false);
@@ -85,7 +85,7 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
   return (
     <div className="min-h-screen bg-black text-white pt-24 px-4 md:px-20 font-sans pb-10">
 
-      {}
+      { }
       <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-xl md:text-2xl font-bold text-red-600">ORDER: {order._id}</h1>
@@ -97,10 +97,10 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
       </div>
 
       <div className="grid md:grid-cols-3 gap-8">
-        {}
+        { }
         <div className="md:col-span-2 space-y-6">
 
-          {}
+          { }
           <div className="border border-gray-800 p-6 rounded bg-[#111]">
             <h2 className="text-xl font-bold mb-3 border-b border-gray-800 pb-2">Çatdırılma</h2>
             <p><strong className="text-gray-400">Ad:</strong> {order.user?.name}</p>
@@ -110,14 +110,10 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
               {order.shippingAddress?.address}, {order.shippingAddress?.city}, {order.shippingAddress?.country}
             </p>
 
-            {order.isDelivered ? (
-              <div className="mt-4 bg-green-900/30 text-green-500 p-3 rounded text-center border border-green-900">Çatdırılıb</div>
-            ) : (
-              <div className="mt-4 bg-red-900/30 text-red-500 p-3 rounded text-center border border-red-900">Çatdırılmayıb</div>
-            )}
+
           </div>
 
-          {}
+          { }
           <div className="border border-gray-800 p-6 rounded bg-[#111]">
             <h2 className="text-xl font-bold mb-3 border-b border-gray-800 pb-2">Ödəniş</h2>
             <p><strong className="text-gray-400">Metod:</strong> {order.paymentMethod}</p>
@@ -129,7 +125,7 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
             )}
           </div>
 
-          {}
+          { }
           <div className="border border-gray-800 p-6 rounded bg-[#111]">
             <h2 className="text-xl font-bold mb-3 border-b border-gray-800 pb-2">Məhsullar</h2>
             {order.orderItems?.map((item: any, index: number) => (
@@ -148,7 +144,7 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
           </div>
         </div>
 
-        {}
+        { }
         <div className="md:col-span-1 space-y-6">
           <div className="border border-gray-800 p-6 rounded bg-[#111] sticky top-24">
             <h2 className="text-xl font-bold mb-4 border-b border-gray-800 pb-2">Yekun</h2>
@@ -160,15 +156,13 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
               <span className="text-red-500">${order.totalPrice}</span>
             </div>
 
-            {}
+            { }
             {userInfo && userInfo.isAdmin && (
               <div className="mt-8 pt-6 border-t border-gray-700 space-y-3">
                 {!order.isPaid && (
                   <button onClick={payHandler} className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded">Mark As Paid</button>
                 )}
-                {order.isPaid && !order.isDelivered && (
-                  <button onClick={deliverHandler} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded">Mark As Delivered</button>
-                )}
+
               </div>
             )}
           </div>
