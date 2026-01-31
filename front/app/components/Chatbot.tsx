@@ -43,7 +43,7 @@ const ChatBot = () => {
             return "🏀 **Ball is Life.** We have NBA 2K in stock. Need some VC to upgrade your MyPlayer? We have gift cards for that too.";
 
         if (contains(["doner", "pecat", "saurma"]))
-            return "😋 Yummy it is now 2.90 in Pecat-Doner.";
+            return "😋 Yummy it is now 3.90 in Pecat-Doner.";
 
         if (contains(["ufc", "mma", "fighting", "wwe", "wrestling"]))
             return "🥊 **Fight Night:** We have UFC 5 and WWE 2K available. Step into the octagon or the ring!";
